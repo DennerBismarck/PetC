@@ -65,11 +65,9 @@ void menuSobre(void){
 
 /* Função do menu principal */
 void menuPrincipal(void){
-    system("clear||cls");
-
-    mostradorLogo();
-    
     char opMenuPrincipal[1];
+    system("clear||cls");
+    mostradorLogo();
 
     printf("##### MENU PRINCIPAL #####\n");
     printf("\t1. Atendimentos\n");
@@ -79,26 +77,27 @@ void menuPrincipal(void){
     printf("\t0. Sair\n");
     printf("##########################\n");
 
-    printf("Digite sua opcao: ");
-    scanf("%s", opMenuPrincipal);   
+    while (strcmp(opMenuPrincipal, "0") != 0){ 
 
-    while (strcmp(opMenuPrincipal, "0") != 0){     
+
+        printf("Digite sua opcao: ");
+        scanf("%s", opMenuPrincipal);      
+
         if (strcmp(opMenuPrincipal, "1") == 0){
             menuAtendimentos();
         }else if (strcmp(opMenuPrincipal, "2") == 0){
-            printf("uiui");
+            menuCliente();
         } else if(strcmp(opMenuPrincipal, "3") == 0){
-            printf("uiui");
+            menuLoja();
         }else if (strcmp(opMenuPrincipal, "4") == 0){
-            printf("uiui");
+            menuSobre();
+        } else if (strcmp(opMenuPrincipal, "0") == 0){
+            printf("Saindo...");
         }
         else{
-            printf("\tDigite uma opcao valida!");
+            printf("\tDigite uma opcao valida!\n");
         }
-        printf("\tPRESSIONE ENTER PARA CONTINUAR");
-        getchar();
-        printf("Digite sua opcao: ");
-        scanf("%s", opMenuPrincipal);  
+        printf("=============================================\n");
     }
 }
 /*Função main do código*/
