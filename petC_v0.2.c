@@ -64,8 +64,9 @@ void menuSobre(void){
 
 
 /* Função do menu principal */
-void menuPrincipal(void){
-    char opMenuPrincipal[1];
+int menuPrincipal(void){
+    int opMenuPrincipal;
+
     system("clear||cls");
     mostradorLogo();
 
@@ -77,32 +78,31 @@ void menuPrincipal(void){
     printf("\t0. Sair\n");
     printf("##########################\n");
 
-    while (strcmp(opMenuPrincipal, "0") != 0){ 
+    printf("Digite sua opcao: ");
+    scanf("%d", &opMenuPrincipal);
+    return opMenuPrincipal;   
 
-
-        printf("Digite sua opcao: ");
-        scanf("%s", opMenuPrincipal);      
-
-        if (strcmp(opMenuPrincipal, "1") == 0){
-            menuAtendimentos();
-        }else if (strcmp(opMenuPrincipal, "2") == 0){
-            menuCliente();
-        } else if(strcmp(opMenuPrincipal, "3") == 0){
-            menuLoja();
-        }else if (strcmp(opMenuPrincipal, "4") == 0){
-            menuSobre();
-        } else if (strcmp(opMenuPrincipal, "0") == 0){
-            printf("Saindo...\n");
-        }
-        else{
-            printf("\tDigite uma opcao valida!\n");
-        }
-        printf("=============================================\n");
-    }
 }
 /*Função main do código*/
 int main(){
-    menuPrincipal();
-
+    int opMenuPrincipal = menuPrincipal();
+    while (opMenuPrincipal != 0) { 
+        if (opMenuPrincipal == 1){
+            menuAtendimentos();
+        } else if (opMenuPrincipal == 2){
+            menuCliente();
+        } else if (opMenuPrincipal == 3){
+            menuLoja();          
+        } else if (opMenuPrincipal == 4){
+            menuSobre();
+        } else{
+            printf("\tDigite novamente!\n");
+        }
+        printf("Digite Enter para continuar");
+        getchar();
+        getchar();  
+        opMenuPrincipal = menuPrincipal();
+        printf("====================================\n");  
+    }
     return 0;
 }
