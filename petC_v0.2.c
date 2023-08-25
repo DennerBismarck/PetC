@@ -5,10 +5,11 @@
 
 /*Declaração das funções*/
 void mostradorLogo(void);
-void menuAtendimentos(void);
-void menuCliente(void);
-void menuLoja(void);
+int menuAtendimentos(void);
+int menuCliente(void);
+int menuLoja(void);
 void menuSobre(void);
+int menuPrincipal(void);
 
 /*Função da logo principal*/
 void mostradorLogo(void){
@@ -26,27 +27,49 @@ void mostradorLogo(void){
 }
 
 /*Função do menu Atendimentos*/
-void menuAtendimentos(void){
+int menuAtendimentos(void){
+    int opAtendimentos;
     system("clear||cls");
     mostradorLogo();
     printf("##### MENU ATENDIMENTOS #####\n");
-    printf("##### EM DESENVOLVIMENTO...\n");
+    printf("\t1. Consultas\n");
+    printf("\t2. Procedimentos esteticos\n");
+    printf("\t0. Sair\n");
+    printf("##########################\n");
+
+    printf("Digite sua opcao: ");
+    scanf("%d", &opAtendimentos);
+    return opAtendimentos;      
 }
 
 /*Função do menu de clientes*/
-void menuCliente(void){
+int menuCliente(void){
+    int opClientes;
     system("clear||cls");
     mostradorLogo();
     printf("##### MENU CLIENTES #####\n");
-    printf("##### EM DESENVOLVIMENTO...\n");
+    printf("\t1. Cadastrar Cliente\n");
+    printf("\t2. Ver Clientes");
+    printf("\t0. Sair\n");
+
+    printf("Digite sua opcao: ");
+    scanf("%d", &opClientes);
+    return opClientes;   
 }
 
 /*Função do menu Loja*/
-void menuLoja(void){
+int menuLoja(void){
+    int opLoja;
     system("clear||cls");
     mostradorLogo();
     printf("##### MENU LOJA #####\n");
-    printf("##### EM DESENVOLVIMENTO...\n");
+    printf("\t1. Produtos\n");
+    printf("\t2. Vendas\n");
+    printf("\t0. Sair\n");
+
+    printf("Digite sua opcao: ");
+    scanf("%d", &opLoja);
+    return opLoja; 
 }
 
 /*Função do menu Sobre*/
