@@ -3,13 +3,21 @@
 #include <string.h>
 
 
-/*Declaração das funções*/
+/*Declaração das funções principais*/
 void mostradorLogo(void);
 int menuAtendimentos(void);
 int menuCliente(void);
 int menuLoja(void);
 void menuSobre(void);
 int menuPrincipal(void);
+
+/*Declaração das subfunções de cada módulo*/
+int menuConsultas(void);
+void createConsulta(void);
+void verConsultas(void);
+int menuProcedimentos(void);
+void agendarProcedimento(void);
+void verProcedimentos(void);
 
 /*Função da logo principal*/
 void mostradorLogo(void){
@@ -41,6 +49,53 @@ int menuAtendimentos(void){
     scanf("%d", &opAtendimentos);
     return opAtendimentos;      
 }
+
+/*SubFunções de Atendimentos*/
+int menuConsultas(void){
+    int opConsultas;
+    system("clear||cls");
+    mostradorLogo();
+    printf("#### MENU CONSULTAS ####\n");
+    printf("\t1. Agendar nova consulta\n");
+    printf("\t2. Ver consultas\n");
+}
+/*Subfunções do menu consultas*/
+void createConsulta(void){
+    system("clear||cls");
+    mostradorLogo();
+    printf("#### AGENDAR CONSULTA ####\n");
+    printf("#### EM DESENVOLVIMENTO ####\n");
+}
+void verConsultas(void){
+    int opConsultas;
+    system("clear||cls");
+    mostradorLogo();
+    printf("#### VER CONSULTAS ####\n");
+    printf("#### EM DESENVOLVIMENTO ####\n");
+}
+
+int menuProcedimentos(){
+    int opProcedimentos;
+    system("clear||cls");
+    mostradorLogo();
+    printf("#### MENU PROCEDIMENTOS #### \n");
+    printf("\t1. Agendar procedimento");
+    printf("\t2. Ver procedimentos");
+}
+void agendarProcedimento(){
+    system("clear||cls");
+    mostradorLogo();
+    printf("#### AGENDAR PROCEDIMENTO ####\n");
+    printf("#### EM DESENVOLVIMENTO ####\n");   
+}
+void verProcedimentos(){
+    int opConsultas;
+    system("clear||cls");
+    mostradorLogo();
+    printf("#### VER PROCEDIMENTOS ####\n");
+    printf("#### EM DESENVOLVIMENTO ####\n");
+}
+
 
 /*Função do menu de clientes*/
 int menuCliente(void){
