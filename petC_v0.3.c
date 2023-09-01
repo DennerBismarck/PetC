@@ -15,9 +15,21 @@ int menuPrincipal(void);
 int menuConsultas(void);
 void createConsulta(void);
 void verConsultas(void);
+
 int menuProcedimentos(void);
 void agendarProcedimento(void);
 void verProcedimentos(void);
+
+void cadastrarCliente(void);
+void verCliente(void);
+
+int menuProdutos(void);
+void cadastrarProduto(void);
+void verProduto(void);
+
+int menuVendas(void);
+void cadastrarVenda(void);
+void verVenda(void);
 
 /*Função da logo principal*/
 void mostradorLogo(void){
@@ -89,7 +101,7 @@ void agendarProcedimento(){
     printf("#### EM DESENVOLVIMENTO ####\n");   
 }
 void verProcedimentos(){
-    int opConsultas;
+    int opProcedimentos;
     system("clear||cls");
     mostradorLogo();
     printf("#### VER PROCEDIMENTOS ####\n");
@@ -111,6 +123,20 @@ int menuCliente(void){
     scanf("%d", &opClientes);
     return opClientes;   
 }
+/*Subfunções do menu clientes*/
+void cadastrarCliente(void){
+    system("clear||cls");
+    mostradorLogo();
+    printf("#### CADASTRAR CLIENTE ####\n");
+    printf("#### EM DESENVOLVIMENTO ####\n");   
+}
+void verCliente(void){
+    system("clear||cls");
+    mostradorLogo();
+    printf("#### VER CLIENTE ####\n");
+    printf("#### EM DESENVOLVIMENTO ####\n");       
+}
+
 
 /*Função do menu Loja*/
 int menuLoja(void){
@@ -125,6 +151,63 @@ int menuLoja(void){
     printf("Digite sua opcao: ");
     scanf("%d", &opLoja);
     return opLoja; 
+}
+
+/*Subfunções do menu Loja*/
+int menuProdutos(void){
+    int opProdutos;
+    system("clear||cls");
+    mostradorLogo();
+    printf("##### MENU PRODUTOS #####\n");
+    printf("\t1. Cadastrar produto\n");
+    printf("\t2. Ver produto\n");
+    printf("\t0. Sair\n");
+
+    printf("Digite sua opcao: ");
+    scanf("%d", &opProdutos);
+    return opProdutos;     
+}
+
+void cadastrarProduto(void){
+    system("clear||cls");
+    mostradorLogo();
+    printf("#### CADASTRAR PRODUTO ####\n");
+    printf("#### EM DESENVOLVIMENTO ####\n");   
+}
+
+void verProduto(void){
+    system("clear||cls");
+    mostradorLogo();
+    printf("#### VER PRODUTO ####\n");
+    printf("#### EM DESENVOLVIMENTO ####\n");       
+}
+
+int menuVendas(void){
+    int opVendas;
+    system("clear||cls");
+    mostradorLogo();
+    printf("##### MENU PRODUTOS #####\n");
+    printf("\t1. Realizar venda\n");
+    printf("\t2. Relatorio de vendas\n");
+    printf("\t0. Sair\n");
+
+    printf("Digite sua opcao: ");
+    scanf("%d", &opVendas);
+    return opVendas;         
+}
+
+void cadastrarVenda(void){
+    system("clear||cls");
+    mostradorLogo();
+    printf("#### VENDA ####\n");
+    printf("#### EM DESENVOLVIMENTO ####\n");       
+}
+
+void verVenda(void){
+    system("clear||cls");
+    mostradorLogo();
+    printf("#### RELATORIO DE VENDAS ####\n");
+    printf("#### EM DESENVOLVIMENTO ####\n");         
 }
 
 /*Função do menu Sobre*/
