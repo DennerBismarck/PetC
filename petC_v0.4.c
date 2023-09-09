@@ -70,6 +70,13 @@ int menuConsultas(void){
     printf("#### MENU CONSULTAS ####\n");
     printf("\t1. Agendar nova consulta\n");
     printf("\t2. Ver consultas\n");
+    printf("\t0. Voltar\n");
+
+    printf("##########################\n");
+
+    printf("Digite sua opcao: ");
+    scanf("%d", &opConsultas);
+    return opConsultas;      
 }
 /*Subfunções do menu consultas*/
 void createConsulta(void){
@@ -79,7 +86,6 @@ void createConsulta(void){
     printf("#### EM DESENVOLVIMENTO ####\n");
 }
 void verConsultas(void){
-    int opConsultas;
     system("clear||cls");
     mostradorLogo();
     printf("#### VER CONSULTAS ####\n");
@@ -93,6 +99,12 @@ int menuProcedimentos(){
     printf("#### MENU PROCEDIMENTOS #### \n");
     printf("\t1. Agendar procedimento");
     printf("\t2. Ver procedimentos");
+
+    printf("##########################\n");
+
+    printf("Digite sua opcao: ");
+    scanf("%d", &opProcedimentos);
+    return opProcedimentos;       
 }
 void agendarProcedimento(){
     system("clear||cls");
@@ -101,7 +113,6 @@ void agendarProcedimento(){
     printf("#### EM DESENVOLVIMENTO ####\n");   
 }
 void verProcedimentos(){
-    int opProcedimentos;
     system("clear||cls");
     mostradorLogo();
     printf("#### VER PROCEDIMENTOS ####\n");
@@ -247,31 +258,80 @@ int menuPrincipal(void){
 /*Função main do código*/
 int main(){
     int opMenuPrincipal;
+    int opmenuAtendimentos;
+    int opmenuConsultas;
+
     do{
         opMenuPrincipal = menuPrincipal();
         switch (opMenuPrincipal){
-        case 1:
-            menuAtendimentos();
-            break;
-        case 2:
-            menuCliente();
-            break;
-        case 3:
-            menuLoja();
-            break;
-        case 4:
-            menuSobre();   
-            break;
-        case 0:
-            printf("================================\n");
-            break;         
-        default:
-            printf("Digite novamente!");
-            break;
-        printf("Digite Enter para continuar");
-        getchar();
-        getchar();  
-        printf("====================================\n");        
+            
+            case 1:
+                    do{
+                        opmenuAtendimentos = menuAtendimentos();
+                        switch(opmenuAtendimentos){
+                            case 1:
+                                do{
+                                    opmenuConsultas = menuConsultas();
+                                    switch (opmenuConsultas){
+                                        case 1:
+                                            createConsulta();
+                                            break;
+                                        case 2:
+                                            verConsultas();
+                                            break;
+                                        case 0:
+                                            printf("================================\n");
+                                            break;    
+                                        default:
+                                            printf("Digite novamente!");
+                                            break;                                         
+                                    } 
+                                } while (opmenuConsultas != 0);
+                                printf("Digite Enter para continuar");
+                                getchar();
+                                getchar();  
+                                printf("====================================\n");    
+                                break;
+
+                            case 2:
+                                menuProcedimentos();
+                                break;
+                            
+                            case 0:
+                                printf("================================\n");
+                                break;    
+                           
+                            default:
+                                printf("Digite novamente!");
+                                break;
+
+                            printf("Digite Enter para continuar");
+                            getchar();
+                            getchar();  
+                            printf("====================================\n");                                            
+                        }
+                    }while (opmenuAtendimentos!=0);            
+                break;
+
+            case 2:
+                menuCliente();
+                break;
+            case 3:
+                menuLoja();
+                break;
+            case 4:
+                menuSobre();   
+                break;
+            case 0:
+                printf("================================\n");
+                break;         
+            default:
+                printf("Digite novamente!");
+                break;
+            printf("Digite Enter para continuar");
+            getchar();
+            getchar();  
+            printf("====================================\n");        
         }
     } while (opMenuPrincipal != 0);
     return 0;
