@@ -260,6 +260,11 @@ int main(){
     int opMenuPrincipal;
     int opmenuAtendimentos;
     int opmenuConsultas;
+    int opmenuProcedimentos;
+    int opmenuClientes;
+    int opmenuLoja;
+    int opmenuProdutos;
+    int opmenuVendas;
 
     do{
         opMenuPrincipal = menuPrincipal();
@@ -294,9 +299,28 @@ int main(){
                                 break;
 
                             case 2:
-                                menuProcedimentos();
+                                do{
+                                    opmenuProcedimentos = menuProcedimentos();
+                                    switch (opmenuProcedimentos){
+                                        case 1:
+                                            agendarProcedimento();
+                                            break;
+                                        case 2:
+                                            verProcedimentos();
+                                            break;
+                                        case 0:
+                                            printf("================================\n");
+                                            break;    
+                                        default:
+                                            printf("Digite novamente!");
+                                            break;                                         
+                                    } 
+                                } while (opmenuProcedimentos != 0);
+                                printf("Digite Enter para continuar");
+                                getchar();
+                                getchar();  
+                                printf("====================================\n");    
                                 break;
-                            
                             case 0:
                                 printf("================================\n");
                                 break;    
@@ -314,10 +338,94 @@ int main(){
                 break;
 
             case 2:
-                menuCliente();
+                    do{
+                        opmenuClientes = menuCliente();
+                        switch(opmenuClientes){
+                            case 1:
+                                cadastrarCliente();
+                                break;
+                            case 2:
+                                verCliente();
+                                break;
+                            case 0:
+                                printf("================================\n");
+                                break;    
+                            default:
+                                printf("Digite novamente!");
+                                break;
+
+                            printf("Digite Enter para continuar");
+                            getchar();
+                            getchar();  
+                            printf("====================================\n");                                            
+                        }
+                    }while (opmenuClientes!=0);            
                 break;
             case 3:
-                menuLoja();
+                    do{
+                        opmenuLoja = menuLoja();
+                        switch(opmenuLoja){
+                            case 1:
+                                do{
+                                    opmenuProdutos = menuProdutos();
+                                    switch (opmenuProdutos){
+                                        case 1:
+                                            cadastrarProduto();
+                                            break;
+                                        case 2:
+                                            verProduto();
+                                            break;
+                                        case 0:
+                                            printf("================================\n");
+                                            break;    
+                                        default:
+                                            printf("Digite novamente!");
+                                            break;                                         
+                                    } 
+                                } while (opmenuProdutos != 0);
+                                printf("Digite Enter para continuar");
+                                getchar();
+                                getchar();  
+                                printf("====================================\n");    
+                                break;
+
+                            case 2:
+                                do{
+                                    opmenuVendas = menuVendas();
+                                    switch (opmenuVendas){
+                                        case 1:
+                                            cadastrarVenda();
+                                            break;
+                                        case 2:
+                                            verVenda();
+                                            break;
+                                        case 0:
+                                            printf("================================\n");
+                                            break;    
+                                        default:
+                                            printf("Digite novamente!");
+                                            break;                                         
+                                    } 
+                                } while (opmenuVendas != 0);
+                                printf("Digite Enter para continuar");
+                                getchar();
+                                getchar();  
+                                printf("====================================\n");    
+                                break;
+                            case 0:
+                                printf("================================\n");
+                                break;    
+                           
+                            default:
+                                printf("Digite novamente!");
+                                break;
+
+                            printf("Digite Enter para continuar");
+                            getchar();
+                            getchar();  
+                            printf("====================================\n");                                            
+                        }
+                    }while (opmenuAtendimentos!=0);            
                 break;
             case 4:
                 menuSobre();   
