@@ -54,7 +54,42 @@ Projeto em C desenvolvido ao longo da matéria DCT1106.
   - Editar consulta
   - Desmarcar consulta
   - Aprovar solicitação de mesmarcar e editar consulta
-**Sub-Módulo: Marcar procedimentos estéticos (Tosa, banho, etc), onde haverá uma tabela de procedimentos disponíveis e as mesmas funcionalidades das consultas normais**
+  - Todos as funcionalidades desse móludo exigirão estar logados para acessar, menos o de procedimentos estéticos.
+    
+**Sub-Módulo: Marcar procedimentos estéticos (Tosa, banho, etc), onde haverá uma tabela de procedimentos disponíveis e as mesmas funcionalidades das consultas normais; Para pessoas não logadas, será possível somente ver o catalogo de procedimentos.**
+
+### Telas:
+- Menu Veterinário{
+  - Consultas (**Acesso somente logado**)
+  - Procedimentos estéticos
+  - Voltar
+  
+ }
+ 
+- Menu Consultas{
+  - Agendar consulta
+  - Minhas consultas
+  - Tabela de Consultas (**Acesso para admin**)
+  - Voltar
+
+  }
+
+- Menu Agendar Consulta{
+  - Data da consulta
+  - Hora da consulta
+  - Sistema deverá checar se o horário está disponível
+  - Sistema passará as informações do cliente que agendou automaticamente por seu login  
+ }
+ 
+- Menu Procedimentos{
+  - Agendar procedimento
+  - Minhas agendas
+  - Tabela de procedimentos
+  - Voltar
+ 
+  }
+  
+
 
 
    
