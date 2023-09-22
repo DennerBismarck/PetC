@@ -2,18 +2,17 @@
 Projeto em C desenvolvido ao longo da matéria DCT1106.
 
 # Módulos e funcionalidades
-```O projeto irá emular duas funcionalidades principais distintas no mesmo software, uma clinica veterinária junto com um petshop. O projeto contará com versões de cliente e versões de admin.```
+```O projeto irá emular duas funcionalidades principais distintas no mesmo software, uma clinica veterinária junto com um petshop. O projeto contará com versões de cliente e versões de admin. Também contará com um módulo de admin simplificado```
 ## Módulo base:
 - Autenticação para clientes e funcionários 
 - Menu de escolha entre módulo de Petshop e Módulo veterinário (Menu principal)
 - Cadastro de cliente 
-- Cadastro de funcionários **(Disponível para Admins)**
 ### Telas:
 - Menu principal{
   - Login ou cadastrar-se
   - Veterinário
   - Petshop
-  - Cadastrar funcionário (**Aparecerá somente para funcionários logados**)
+  - Módulo do Admin (**Aparecerá somenta para funcionários logados**)
   - Sobre o projeto
   - Sair
     
@@ -80,7 +79,24 @@ Projeto em C desenvolvido ao longo da matéria DCT1106.
   - Sistema deverá checar se o horário está disponível
   - Sistema passará as informações do cliente que agendou automaticamente por seu login  
  }
- 
+
+ - Menu Minhas Consultas{
+   - Exibir todas as consultas do usuário, marcado e desmarcado
+   - Opção de pesquisar por data de consulta
+   - Editar/Deletar consulta específica
+  }
+
+- Tabela de consultas{
+  - Semelhante ao "Minhas consultas" porém com uma visão de administrador que contará com todas as consultas já registradas.
+  - O admin poderá procurar por datas específicas  
+
+- Menu Editar/Deletar consulta{
+  - Opção de deletar ou editar
+  - Se o usuário for admin, edita ou deleta direto
+  - Se for cliente, envia solicitação para admin
+
+}
+
 - Menu Procedimentos{
   - Agendar procedimento
   - Minhas agendas
@@ -89,6 +105,31 @@ Projeto em C desenvolvido ao longo da matéria DCT1106.
  
   }
   
+- Menu Agendar procedimento{
+  - Listagem com os procedimentos disponíveis
+  - Data do procedimento
+  - Hora do procedimento
+  - Sistema deverá checar se o horário está disponível
+  - Sistema passará as informações do cliente que agendou automaticamente por seu login  
+  
+ - Menu Meus procedimentos{
+   - Exibir todos os procedimentos do usuário, marcado e desmarcado
+   - Opção de pesquisar por data de procedimento
+   - Editar/Deletar procedimento específico
+  }
+
+- Tabela de procedimentos{
+  - Semelhante ao "Minhas consultas" porém com uma visão de administrador que contará com todas as consultas já registradas. (**Somente para admin**)
+  - O admin poderá procurar por datas específicas
+  - O admin também poderá cadastrar/editar/deletar procedimentos estéticos
+  - Listagem com todos os procedimentos estéticos 
+
+- Menu Editar/Deletar procedimento{
+  - Opção de deletar ou editar
+  - Se o usuário for admin, edita ou deleta direto
+  - Se for cliente, envia solicitação para admin
+
+}
 
 
 
