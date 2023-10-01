@@ -39,30 +39,6 @@ int main(){
                         switch(opmenuAtendimentos){
                             case 1:
                                 do{
-                                    opmenuConsultas = menuConsultas();
-                                    switch (opmenuConsultas){
-                                        case 1:
-                                            createConsulta();
-                                            break;
-                                        case 2:
-                                            verConsultas();
-                                            break;
-                                        case 0:
-                                            printf("================================\n");
-                                            break;    
-                                        default:
-                                            printf("Digite novamente!");
-                                            break;                                         
-                                    } 
-                                } while (opmenuConsultas != 0);
-                                printf("Digite Enter para continuar");
-                                getchar();
-                                getchar();  
-                                printf("====================================\n");    
-                                break;
-
-                            case 2:
-                                do{
                                     opmenuProcedimentos = menuProcedimentos();
                                     switch (opmenuProcedimentos){
                                         case 1:
@@ -121,7 +97,7 @@ int main(){
                         break;
                     }
                 } while (opmenuAutenticacao!=0);
-                
+
                 printf("Digite Enter para continuar");
                 getchar();
                 getchar();  
