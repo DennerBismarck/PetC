@@ -1,10 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 int validador_cpf(char cpf){
-    print("Em desenvolvimento...");
+    printf("Em desenvolvimento...");
     return 2;
 }
 
 void validador_menus(){
-    print("Em desenvolvimento...");
+    printf("Em desenvolvimento...");
 }
 
-/*Mais funções validadoras serão criadas na frente...*/
+/*Função da logo principal*/
+void mostradorLogo(void){
+    printf("       /^-^\\         /^-----^\"\n");
+    printf("      / o o \\        V  o o  V\n");
+    printf("     /   Y   \\        |  Y  |\n");
+    printf("     V \\ v / V         \\ Q /\n");
+    printf("       / - \\           / - \"\n");
+    printf("      /    |           |    \"\n");
+    printf("(    /     |           |     \\     )\n");
+    printf(" ===/___) ||           || (___\\====\n");
+    printf("\n");
+    printf("##### PETC: ONDE SEU PET EH MAIS QUE UMA GARRAFA! #####\n");
+    printf("\n");
+}
+
