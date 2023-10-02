@@ -41,3 +41,18 @@ int menuAutenticacao(void){
     return opMenuCadastroLogin;   
 
 }
+
+void logar(){
+
+    char cpf[15];
+    char senha[100];
+
+    system("clear||cls");
+    mostradorLogo();
+
+    printf("##### LOGAR #####\n");
+    printf("Digite seu cpf: ")
+    scanf("%14s",email);
+    printf("Digite sua senha: ")
+    scanf("%99s", senha);
+}
