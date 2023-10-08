@@ -51,8 +51,8 @@ void logar(){
     mostradorLogo();
 
     printf("##### LOGAR #####\n");
-    printf("Digite seu cpf: ")
-    scanf("%14s",email);
-    printf("Digite sua senha: ")
+    printf("Digite seu cpf: ");
+    scanf("%14s",cpf);
+    printf("Digite sua senha: ");
     scanf("%99s", senha);
 }
