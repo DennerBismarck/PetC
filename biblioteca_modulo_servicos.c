@@ -37,7 +37,8 @@ void agendarProcedimento(){
     system("clear||cls");
     mostradorLogo();
     printf("#### AGENDAR PROCEDIMENTO ####\n");
-    printf("#### EM DESENVOLVIMENTO ####\n");   
+    printf("Selecione a data: \n");
+    printf("Selecione a hora: \n");   
 }
 void verProcedimentos(){
     system("clear||cls");

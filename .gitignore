@@ -1,0 +1,7 @@
+.vscode
+biblioteca_Funcoes_auxiliares.o
+biblioteca_modulo_clientes.o
+biblioteca_modulo_inicio.o
+biblioteca_modulo_servicos.o
+biblioteca_modulo_admin.o
+a.exe
