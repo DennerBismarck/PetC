@@ -22,7 +22,10 @@ void cadastrarCliente(void){
     system("clear||cls");
     mostradorLogo();
     printf("#### CADASTRAR CLIENTE ####\n");
-    printf("#### EM DESENVOLVIMENTO ####\n");   
+    printf("Nome\n");
+    printf("CPF\n");
+    printf("Email\n");
+    printf("Senha\n");   
 }
 void verCliente(void){
     system("clear||cls");
