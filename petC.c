@@ -52,52 +52,70 @@ int main(){
                                             break;    
                                         default:
                                             printf("Digite novamente!");
-                                            break;                                         
+                                            break;                                        
                                     } 
                                 } while (opmenuProcedimentos != 0);
                                 printf("Digite Enter para continuar");
                                 getchar();
                                 getchar();  
-                                printf("====================================\n");    
-                                break;
+                                printf("====================================\n");         
                             case 0:
-                                printf("================================\n");
-                                break;    
-                           
+                                printf("====================================\n");    
+                                break;                           
                             default:
                                 printf("Digite novamente!");
-                                break;
-
-                            printf("Digite Enter para continuar");
-                            getchar();
-                            getchar();  
-                            printf("====================================\n");                                            
+                                printf("Digite Enter para continuar");
+                                break;                                         
                         }
                     }while (opmenuAtendimentos!=0);            
-                break;
+                    printf("Digite Enter para continuar");
+                    getchar();
+                    getchar();  
+                    printf("====================================\n");    
+                    break;
 
             case 2:
                 menuSobre();   
+                printf("Digite Enter para continuar");
+                getchar();
+                getchar();  
+                printf("====================================\n");    
                 break;
+
             case 3:
                 do{
                     opmenuAutenticacao = menuAutenticacao();
                     switch (opmenuAutenticacao){
                     case 1:
                         printf("Abuble");
+                        printf("Digite Enter para continuar");
+                        getchar();
+                        getchar();  
+                        printf("====================================\n");    
                         break;
                     case 2:
                         cadastrarCliente();
+                        printf("Digite Enter para continuar");
+                        getchar();
+                        getchar();  
+                        printf("====================================\n");    
                         break;
                     case 0:
                         printf("================================\n");
-                        break;
+                        printf("Digite Enter para continuar");
+                        getchar();
+                        getchar();  
+                        printf("====================================\n");    
+                        break;  
                     default:
                         printf("Digite novamente!");
+                        printf("Digite Enter para continuar");
+                        getchar();
+                        getchar();  
+                        printf("====================================\n");    
                         break;
                     }
                 } while (opmenuAutenticacao!=0);
-
                 printf("Digite Enter para continuar");
                 getchar();
                 getchar();  
@@ -106,9 +124,17 @@ int main(){
 
             case 0:
                 printf("================================\n");
-                break;         
+                printf("Digite Enter para continuar");
+                getchar();
+                getchar();  
+                printf("====================================\n");    
+                break;
             default:
                 printf("Digite novamente!");
+                printf("Digite Enter para continuar");
+                getchar();
+                getchar();  
+                printf("====================================\n");    
                 break;
             printf("Digite Enter para continuar");
             getchar();
