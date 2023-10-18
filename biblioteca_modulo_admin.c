@@ -18,11 +18,11 @@ int menuRequisicoes(void){
     return opRequisicoes;      
 }
 
-requisicoesClientes(void){
+void requisicoesClientes(void){
     printf("Em desenvolvimento");
 }
 
-requisicoesAgendamentos(void){
+void requisicoesAgendamentos(void){
     printf("Em desenvolvimento");
 }
 
