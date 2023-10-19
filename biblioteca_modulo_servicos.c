@@ -19,20 +19,6 @@ int menuAtendimentos(void){
     scanf("%d", &opAtendimentos);
     return opAtendimentos;      
 }
-int menuProcedimentos(){
-    int opProcedimentos;
-    system("clear||cls");
-    mostradorLogo();
-    printf("#### MENU PROCEDIMENTOS #### \n");
-    printf("\t1. Agendar procedimento");
-    printf("\t2. Ver procedimentos");
-
-    printf("##########################\n");
-
-    printf("Digite sua opcao: ");
-    scanf("%d", &opProcedimentos);
-    return opProcedimentos;       
-}
 void agendarProcedimento(){
     system("clear||cls");
     mostradorLogo();
@@ -44,5 +30,12 @@ void verProcedimentos(){
     system("clear||cls");
     mostradorLogo();
     printf("#### VER PROCEDIMENTOS ####\n");
+    printf("#### EM DESENVOLVIMENTO ####\n");
+}
+
+void tabelaProcedimentos(){
+    system("clear||cls");
+    mostradorLogo();
+    printf("#### TABELA DE PROCEDIMENTOS ####\n");
     printf("#### EM DESENVOLVIMENTO ####\n");
 }

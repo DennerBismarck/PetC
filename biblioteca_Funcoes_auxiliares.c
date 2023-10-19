@@ -26,3 +26,9 @@ void mostradorLogo(void){
     printf("\n");
 }
 
+void digiteEnter(void){
+    printf("Digite Enter para continuar");
+    getchar();
+    getchar();  
+    printf("====================================\n");
+}
