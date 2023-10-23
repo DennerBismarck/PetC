@@ -40,7 +40,7 @@ int main(){
                             case 1:
                                 agendarProcedimento();
                                 break;
-                            case 2:
+                              case 2:
                                 tabelaProcedimentos();
                                 break;
                             case 3:
@@ -75,7 +75,7 @@ int main(){
                         printf("================================\n");
                         break;  
                     default:
-                        printf("Digite novamente!");
+                        printf("Digite novamente!\n");
                         break;
                     }
                     digiteEnter();
@@ -87,7 +87,7 @@ int main(){
                 break;
             default:
                 printf("Digite novamente!");
-                printf("====================================\n");    
+                printf("====================================\n"); 
                 break;
             digiteEnter();       
         }

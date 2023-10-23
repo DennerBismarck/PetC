@@ -19,7 +19,7 @@ int menuPrincipal(void){
     printf("##########################\n");
 
     printf("Digite sua opcao: ");
-    scanf("%d", &opMenuPrincipal);
+    scanf("%d", &opMenuPrincipal); fflush(stdin);
     return opMenuPrincipal;   
 
 }

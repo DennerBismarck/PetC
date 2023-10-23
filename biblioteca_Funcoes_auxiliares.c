@@ -7,10 +7,6 @@ int validador_cpf(char cpf){
     return 2;
 }
 
-void validador_menus(){
-    printf("Em desenvolvimento...");
-}
-
 /*Função da logo principal*/
 void mostradorLogo(void){
     printf("       /^-^\\         /^-----^\"\n");
@@ -27,7 +23,7 @@ void mostradorLogo(void){
 }
 
 void digiteEnter(void){
-    printf("Digite Enter para continuar");
+    printf("Digite Enter para continuar\n");
     getchar();
     getchar();  
     printf("====================================\n");
