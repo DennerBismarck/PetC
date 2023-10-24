@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <stdbool.h>
 #include "biblioteca_Funcoes_auxiliares.h"
 #include "biblioteca_modulo_inicio.h"
 #include "biblioteca_modulo_clientes.h"

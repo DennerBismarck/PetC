@@ -1,11 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-int validador_cpf(char cpf){
-    printf("Em desenvolvimento...");
-    return 2;
-}
+#include <ctype.h>
+#include <stdbool.h>
 
 /*Função da logo principal*/
 void mostradorLogo(void){
@@ -27,4 +24,56 @@ void digiteEnter(void){
     getchar();
     getchar();  
     printf("====================================\n");
+}
+
+/*Função que verifíca se uma variavel de char é um número*/
+bool verificaNumero(char teste){
+    return isdigit(teste);  
+}
+
+
+
+/*Função validadora de cpf (Houve inspiração em uma versão criada pelo chatGPT)*/
+bool validaCPF(const char *cpf){
+    /*Verificador de tamanho*/
+    if (strlen(cpf) != 11) {
+            return false;
+    }
+    /*Verificador de digitos numéricos*/
+    for (int i = 0; i < 11; i++) {
+        if (!verificaNumero(cpf[i])) {
+            return false;
+        }
+    }
+    /*Digito verificador 1*/
+    int total = 0;
+    for (int i = 0; i < 9; i++) {
+        total += (cpf[i] - '0') * (10 - i);
+    }
+    int digito1 = 11 - (total % 11);
+    if (digito1 >= 10) {
+        digito1 = 0;
+    }
+
+    /*Digito verificador 2*/
+    total = 0;
+    for (int i = 0; i < 10; i++) {
+        total += (cpf[i] - '0') * (11 - i);
+    }
+    int digito2 = 11 - (total % 11);
+    if (digito2 >= 10) {
+        digito2 = 0;
+    }
+
+    /*Verificando se as contas deram certo*/
+    return (digito1 == (cpf[9] - '0')) && (digito2 == (cpf[10] - '0'));
+
+}
+
+void resultadoCPF(const char *cpf){
+    if (validaCPF(cpf)) {
+        printf("CPF valido.\n");
+    } else {
+        printf("CPF invalido.\n");
+    }
 }

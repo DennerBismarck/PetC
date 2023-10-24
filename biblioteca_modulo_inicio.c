@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <stdbool.h>
 #include "biblioteca_Funcoes_auxiliares.h"
 
 /*função do menu principal*/
@@ -44,15 +46,22 @@ int menuAutenticacao(void){
 
 void logar(){
 
-    char cpf[15];
+    char cpf[12];
     char senha[100];
 
     system("clear||cls");
     mostradorLogo();
 
     printf("##### LOGAR #####\n");
-    printf("Digite seu cpf: ");
-    scanf("%14s",cpf);
-    printf("Digite sua senha: ");
-    scanf("%99s", senha);
+    while(true){
+        printf("Digite seu cpf: ");
+        scanf("%11s",cpf);
+        if(validaCPF(cpf)){
+            printf("Digite sua senha: ");
+            scanf("%99s", senha);
+            break;
+        }else{
+            printf("CPF invalido!\n");
+        }
+    }
 }
