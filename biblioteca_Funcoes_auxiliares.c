@@ -70,10 +70,15 @@ bool validaCPF(const char *cpf){
 
 }
 
-void resultadoCPF(const char *cpf){
-    if (validaCPF(cpf)) {
-        printf("CPF valido.\n");
-    } else {
-        printf("CPF invalido.\n");
+/*Função de verificação de nomes próprios - Checa se contém números ou caracteres especiais que não são letras acentuadas*/
+bool verificaNome(const char *nome){
+
+    int tam = sizeof(nome);
+
+    for (int i = 0; i < tam; i++){
+        if(!isalpha(nome[i]) && !isspace(nome[i])){
+            return true;   
+        }
     }
+    return false;
 }
