@@ -82,3 +82,12 @@ bool verificaNome(const char *nome){
     }
     return false;
 }
+
+/*Função de verificação da datas*/
+bool verificaData(char *data){
+    const char subDatas[3] = "//";
+    
+    if (strstr(data, subDatas) != NULL){
+        return false;
+    }
+}
