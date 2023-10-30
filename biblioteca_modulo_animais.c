@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <stdbool.h>
 #include "biblioteca_Funcoes_auxiliares.h"
 #include "biblioteca_modulo_clientes.h"
 
@@ -32,5 +34,5 @@ void meusAnimais(void){
     mostradorLogo();
     printf("#### MEUS ANIMAIS ####\n");
     printf("Listagem de animais\n");
-    printf("Selecione seu animal: \n")
+    printf("Selecione seu animal: \n");
 }
