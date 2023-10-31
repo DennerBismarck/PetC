@@ -39,8 +39,8 @@ int menuAutenticacao(void){
     printf("##########################\n");
 
     printf("Digite sua opcao: ");
-    scanf("%d", &opMenuCadastroLogin);
-    return opMenuCadastroLogin;   
+    scanf("%d", &opMenuCadastroLogin); fflush(stdin);
+    return opMenuCadastroLogin;
 
 }
 
@@ -57,8 +57,9 @@ void logar(){
         printf("Digite seu cpf: ");
         scanf("%11s",cpf);
         if(validaCPF(cpf)){
-            printf("Digite sua senha: ");
-            scanf("%99s", senha);
+            fflush(stdin);
+            char *senha = input("Digite sua senha: \n");
+            free(senha);
             break;
         }else{
             printf("CPF invalido!\n");
