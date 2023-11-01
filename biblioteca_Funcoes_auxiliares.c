@@ -94,22 +94,98 @@ bool verificaNome(const char *nome){
     return false;
 }
 
-/*Função de receber datas - inspiração no código de Emerson da Silva Santos
+/*Função de receber datas - inspiração no código de Emerson da Silva Santos*/
 void recebeData(){
-    char data[11];
-    
-    while(true){
-        printf("Digite sua data (DD/MM/AAAA): \n");
+    bool controle = true;
+    while(controle == true){
+        char *data = input("Digite sua data (DD/MM/AAAA): ");
+        free(data);
         
-
+        for (int i = 0; data[i] != '\0'; i++){
+            if (!isdigit(data[i]) && data[i] != '/'){
+            	printf("Data invalida, tente novamente\n");
+                controle = true;
+			}
+        }
+        controle = false;
     }
     
 }
 
-bool verificaData(char *data){
-    const char subDatas[3] = "//";
-    
-    if (strstr(data, subDatas) != NULL){
+/*Função de verificar datas - inspiração no código de Emerson da Silva Santos - Sujeito a alterações, o código está muito feio*/
+bool validaData(const char *data){
+	int dia, mes, ano;
+	char *token;
+	char copiaData[11];
+	strcpy(copiaData, data);
+
+	if (strlen(copiaData) != 10){
+		return false;
+	}
+	else{
+		token = strtok(copiaData, "/");
+		if (token == NULL){
+			return false;
+		}
+		else{
+			dia = atoi(token);
+			token = strtok(NULL, "/");
+
+			if (token == NULL){
+				return false;
+			}else{
+				mes = atoi(token);
+				token = strtok(NULL, "/");
+
+				if (token == NULL){
+					return false;
+				}
+				else{
+					ano = atoi(token);
+					if (ano < 0 || mes < 1 || mes > 12 || dia < 1 || dia > 31){
+						return false;
+					}else{
+						if ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30){
+							return false;
+						}else{
+							if (mes == 2){
+								bool bissexto = (ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0);
+								if ((bissexto && dia > 29) || (!bissexto && dia > 28)){
+									return false;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return true;
+}
+
+/*Função validadora de quantias monetárias - Feita para o formato R$0.00*/
+bool validaValor(const char *dinheiro){
+    int tamanhoChar = sizeof(dinheiro);
+
+    if (tamanhoChar < 2 || dinheiro[0] != 'R' || dinheiro[1] != '$') {
         return false;
     }
-}*/
+
+    for(int i = 2; i<tamanhoChar; i++){
+        if (!verificaNumero(*dinheiro) && dinheiro[i] != '.') {
+            return false;
+        }
+    }
+
+    int controlePontoDecimal = 0;
+    for (int i = 2; i < tamanhoChar; i++) {
+        if (dinheiro[i] == '.') {
+            if (controlePontoDecimal) {
+                return false;
+            }
+            controlePontoDecimal = 1;
+        }
+    }
+
+    return true;
+}

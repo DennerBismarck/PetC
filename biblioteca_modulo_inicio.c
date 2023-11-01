@@ -47,7 +47,6 @@ int menuAutenticacao(void){
 void logar(){
 
     char cpf[12];
-    char senha[100];
 
     system("clear||cls");
     mostradorLogo();
@@ -58,7 +57,7 @@ void logar(){
         scanf("%11s",cpf);
         if(validaCPF(cpf)){
             fflush(stdin);
-            char *senha = input("Digite sua senha: \n");
+            char *senha = input("Digite sua senha: ");
             free(senha);
             break;
         }else{

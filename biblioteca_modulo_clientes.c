@@ -5,29 +5,35 @@
 #include <stdbool.h>
 #include "biblioteca_Funcoes_auxiliares.h"
 
-/*Função do menu de clientes*/
-int menuCliente(void){
-    int opClientes;
-    system("clear||cls");
-    mostradorLogo();
-    printf("##### MENU CLIENTES #####\n");
-    printf("\t1. Cadastrar Cliente\n");
-    printf("\t2. Ver Clientes\n");
-    printf("\t0. Sair\n");
+typedef struct cliente Cliente;
+struct cliente {
+    char nome[81];
+    char cpf[11];
+    char email[41];
+    char senha[100];
 
-    printf("Digite sua opcao: ");
-    scanf("%d", &opClientes);
-    return opClientes;   
-}
+    bool status;
+};
+
 /*Subfunções do menu clientes*/
-void cadastrarCliente(void){
-    system("clear||cls");
-    mostradorLogo();
-    printf("#### CADASTRAR CLIENTE ####\n");
-    printf("Nome\n");
-    printf("CPF\n");
-    printf("Email\n");
-    printf("Senha\n");   
+Cliente* cadastrarCliente(void){
+    Cliente *cli;
+    cli = (Cliente*)malloc(sizeof(Cliente));
+    while (true){
+        system("clear||cls");
+        mostradorLogo();
+        printf("#### CADASTRO ####\n");
+        cli->cpf == input("Digite seu CPF: ");
+        if (validaCPF(cli->cpf)){
+            cli->nome == input("Digite seu nome: ");
+            cli->email == input("Digite seu email: ");
+            cli->senha == input("Digite sua senha: ");
+            cli->status = true;
+            break;
+        }else{
+            printf("Digite um cpf valido.");
+        }    
+    }
 }
 void verCliente(void){
     system("clear||cls");

@@ -5,6 +5,16 @@
 #include <stdbool.h>
 #include "biblioteca_Funcoes_auxiliares.h"
 
+typedef struct servico Servico;
+struct servico {
+    int id;
+    char nome[81];
+    char valor[20];
+
+    bool status;
+};
+
+
 int menuRequisicoes(void){
     int opRequisicoes;
     system("clear||cls");
@@ -36,8 +46,21 @@ void cadastrarFuncionario(){
 }
 
 void cadastrarServico(){
+    system("clear||cls");
     mostradorLogo();
-    printf("nome do servico");
-    printf("Valor");
+    Servico *ser;
+    ser = (Servico*)malloc(sizeof(Servico));
+
+    printf("#### CADASTRAR SERVICO ####\n");
+    ser->id = sizeof(Servico)+1;
+    ser->nome == input("Digite o nome do servico: ");
+    while (true){
+        ser->valor == input("Digite o valor do servico (Formato R$X.XX)");
+        if(!validaValor(ser->valor)){
+            printf("Digite um valor valido.");
+        }else{
+            break;
+        }
+    }
 }
 
