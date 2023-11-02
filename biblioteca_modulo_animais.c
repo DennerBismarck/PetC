@@ -6,6 +6,13 @@
 #include "biblioteca_Funcoes_auxiliares.h"
 #include "biblioteca_modulo_clientes.h"
 
+typedef struct animal Animal;
+struct animal{
+    int id;
+    char descricao[200];
+};
+
+
 int menuAnimal(void){
     int opAnimal;
 
