@@ -36,7 +36,6 @@ char *input(const char *entrada) {
 
 void digiteEnter(void){
     printf("Digite Enter para continuar\n");
-    getchar();
     getchar();  
     printf("====================================\n");
 }
@@ -189,7 +188,7 @@ bool validaValor(const char *dinheiro){
 
     return true;
 }
-/*Feito com inspiração no Código de Gabriel Ygor Canuto - Feito para o formato XX9XXXXXXXX*/
+/*Feito com inspiração no Código de Gabriel Ygor Canuto*/
 bool validaTelefone(char* fone){ 
   int tam;
   tam = strlen(fone);
@@ -197,15 +196,10 @@ bool validaTelefone(char* fone){
     return false;
   }
   for (int i=0; i < tam; i++){
-    if (!ehDg(fone[i])) {
+    if (!verificaNumero(fone[i])) {
       return false;
     }
   }
-  
-  if (fone [2] != "9"){
-    return false;
-  }
-  
   return true;
 }
 

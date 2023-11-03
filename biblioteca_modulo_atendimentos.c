@@ -35,3 +35,7 @@ void verAgendamentos(){
     printf("#### VER PROCEDIMENTOS ####\n");
     printf("#### EM DESENVOLVIMENTO ####\n");
 }
+
+void listarAgendamentos(){
+    printf ("chupaaa");
+}

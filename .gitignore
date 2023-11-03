@@ -5,4 +5,5 @@ biblioteca_modulo_inicio.o
 biblioteca_modulo_servicos.o
 biblioteca_modulo_admin.o
 biblioteca_modulo_animais.o
+biblioteca_modulo_atendimentos.o
 a.exe

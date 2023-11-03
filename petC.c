@@ -7,6 +7,8 @@
 #include "biblioteca_modulo_inicio.h"
 #include "biblioteca_modulo_clientes.h"
 #include "biblioteca_modulo_servicos.h"
+#include "biblioteca_modulo_atendimentos.h"
+#include "biblioteca_modulo_animais.h"
 
 /*Função do menu Sobre*/
 void menuSobre(void){
@@ -29,7 +31,6 @@ int main(){
     int opmenuConsultas;
     int opmenuProcedimentos;
     int opmenuClientes;
-    int opmenuAutenticacao;
 
     do{
         opMenuPrincipal = menuPrincipal();
@@ -40,18 +41,23 @@ int main(){
                         opmenuAtendimentos = menuAtendimentos();
                         switch(opmenuAtendimentos){
                             case 1:
+                                fflush(stdin);
                                 agendarProcedimento();
                                 break;
                               case 2:
-                                tabelaProcedimentos();
+                                fflush(stdin);
+                                verAgendamentos();
                                 break;
                             case 3:
-                                verProcedimentos();
+                                fflush(stdin);
+                                listarAgendamentos();
                                 break;         
                             case 0:
+                                fflush(stdin);
                                 printf("====================================\n");    
                                 break;                           
                             default:
+                                fflush(stdin);
                                 printf("Digite novamente!");
                                 break;                                         
                         }
@@ -65,23 +71,27 @@ int main(){
                 break;
             case 3:
                 do{
-                    opmenuAutenticacao = menuAutenticacao();
-                    switch (opmenuAutenticacao){
+                    opmenuClientes = menuCliente();
+                    switch (opmenuClientes){
                     case 1:
-                        logar(); 
+                        fflush(stdin);
+                        cadastrarCliente(); 
                         break;
                     case 2:
-                        cadastrarCliente();
+                        fflush(stdin);
+                        verCliente();
                         break;
                     case 0:
+                        fflush(stdin);
                         printf("================================\n");
                         break;  
                     default:
+                        fflush(stdin);
                         printf("Digite novamente!\n");
                         break;
                     }
                     digiteEnter();
-                } while (opmenuAutenticacao!=0);                  
+                } while (opmenuClientes!=0);                  
                 break;    
 
             case 0:
