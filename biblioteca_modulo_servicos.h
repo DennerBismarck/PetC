@@ -7,3 +7,4 @@ struct servico {
 
     bool status;
 };
+int menuServicos(void);

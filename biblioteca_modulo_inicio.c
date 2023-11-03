@@ -17,6 +17,7 @@ int menuPrincipal(void){
     printf("\t1. Atendimentos\n");
     printf("\t2. Sobre\n");
     printf("\t3. Clientes\n");
+    printf("\t4. Servicos\n");
     printf("\t0. Sair\n");
     printf("##########################\n");
 
