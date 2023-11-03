@@ -189,3 +189,23 @@ bool validaValor(const char *dinheiro){
 
     return true;
 }
+/*Feito com inspiração no Código de Gabriel Ygor Canuto - Feito para o formato XX9XXXXXXXX*/
+bool validaTelefone(char* fone){ 
+  int tam;
+  tam = strlen(fone);
+  if (tam != 11){
+    return false;
+  }
+  for (int i=0; i < tam; i++){
+    if (!ehDg(fone[i])) {
+      return false;
+    }
+  }
+  
+  if (fone [2] != "9"){
+    return false;
+  }
+  
+  return true;
+}
+

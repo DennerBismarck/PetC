@@ -1,4 +1,9 @@
-int menuAtendimentos(void);
-void agendarProcedimento();
-void verProcedimentos();
-void tabelaProcedimentos();
+typedef struct servico Servico;
+
+struct servico {
+    int id;
+    char nome[81];
+    char valor[20];
+
+    bool status;
+};

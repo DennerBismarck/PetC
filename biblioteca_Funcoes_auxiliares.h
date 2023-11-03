@@ -7,3 +7,4 @@ char *input(const char *entrada);
 void recebeData();
 bool validaData(const char *data);
 bool validaValor(const char *dinheiro);
+bool validaTelefone(char *fone);

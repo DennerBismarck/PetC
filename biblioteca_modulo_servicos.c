@@ -5,39 +5,32 @@
 #include <stdbool.h>
 #include "biblioteca_Funcoes_auxiliares.h"
 
-/*Função do menu Atendimentos*/
-int menuAtendimentos(void){
-    int opAtendimentos;
-    system("clear||cls");
-    mostradorLogo();
-    printf("##### MENU ATENDIMENTOS #####\n");
-    printf("\t1. Agendar novo atendimento\n");
-    printf("\t2. Tabela de atendimentos\n");
-    printf("\t3. Minhas agendas\n");
-    printf("\t0. Sair\n");
-    printf("##########################\n");
+/*Struck de servicos*/
+typedef struct servico Servico;
 
-    printf("Digite sua opcao: ");
-    scanf("%d", &opAtendimentos);
-    return opAtendimentos;      
-}
-void agendarProcedimento(){
-    system("clear||cls");
-    mostradorLogo();
-    printf("#### AGENDAR PROCEDIMENTO ####\n");
-    printf("Selecione a data: \n");
-    printf("Selecione a hora: \n");   
-}
-void verProcedimentos(){
-    system("clear||cls");
-    mostradorLogo();
-    printf("#### VER PROCEDIMENTOS ####\n");
-    printf("#### EM DESENVOLVIMENTO ####\n");
-}
+struct servico {
+    int id;
+    char nome[81];
+    char valor[20];
 
-void tabelaProcedimentos(){
+    bool status;
+};
+
+void cadastrarServico(){
     system("clear||cls");
     mostradorLogo();
-    printf("#### TABELA DE PROCEDIMENTOS ####\n");
-    printf("#### EM DESENVOLVIMENTO ####\n");
+    Servico *ser;
+    ser = (Servico*)malloc(sizeof(Servico));
+
+    printf("#### CADASTRAR SERVICO ####\n");
+    ser->id = sizeof(Servico)+1;
+    ser->nome == input("Digite o nome do servico: ");
+    while (true){
+        ser->valor == input("Digite o valor do servico (Formato R$X.XX)");
+        if(!validaValor(ser->valor)){
+            printf("Digite um valor valido.");
+        }else{
+            break;
+        }
+    }
 }

@@ -16,7 +16,7 @@ int menuPrincipal(void){
     printf("##### MENU PRINCIPAL #####\n");
     printf("\t1. Atendimentos\n");
     printf("\t2. Sobre\n");
-    printf("\t3. Login ou Cadastro\n");
+    printf("\t3. Clientes\n");
     printf("\t0. Sair\n");
     printf("##########################\n");
 
@@ -24,44 +24,4 @@ int menuPrincipal(void){
     scanf("%d", &opMenuPrincipal); fflush(stdin);
     return opMenuPrincipal;   
 
-}
-
-int menuAutenticacao(void){
-    int opMenuCadastroLogin;
-    
-    system("clear||cls");
-    mostradorLogo();
-
-    printf("##### MENU AUTENTICACAO #####\n");
-    printf("\t1. Login\n");
-    printf("\t2. Cadastro\n");
-    printf("\t0. Sair\n");
-    printf("##########################\n");
-
-    printf("Digite sua opcao: ");
-    scanf("%d", &opMenuCadastroLogin); fflush(stdin);
-    return opMenuCadastroLogin;
-
-}
-
-void logar(){
-
-    char cpf[12];
-
-    system("clear||cls");
-    mostradorLogo();
-
-    printf("##### LOGAR #####\n");
-    while(true){
-        printf("Digite seu cpf: ");
-        scanf("%11s",cpf);
-        if(validaCPF(cpf)){
-            fflush(stdin);
-            char *senha = input("Digite sua senha: ");
-            free(senha);
-            break;
-        }else{
-            printf("CPF invalido!\n");
-        }
-    }
 }

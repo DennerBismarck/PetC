@@ -10,6 +10,7 @@ typedef struct animal Animal;
 struct animal{
     int id;
     char descricao[200];
+    char cpfDoCliente[11];
 };
 
 
@@ -39,7 +40,5 @@ void createAnimal(void){
 void meusAnimais(void){
     system("clear||cls");
     mostradorLogo();
-    printf("#### MEUS ANIMAIS ####\n");
-    printf("Listagem de animais\n");
-    printf("Selecione seu animal: \n");
+    printf("#### ANIMAIS DO CLIENTE ####\n");
 }
