@@ -14,3 +14,4 @@ Cliente* cadastrarCliente(void);
 int verCliente(void);
 void listarCliente(void);
 void pesquisarCliente(void);
+void updateCliente();

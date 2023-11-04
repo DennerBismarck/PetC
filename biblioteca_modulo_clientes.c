@@ -90,7 +90,9 @@ int verCliente(void){
     mostradorLogo();
     printf("#### VER CLIENTE ####\n");
     printf("\t1. Listar todos os clientes\n");
-    printf("\t2. Pesquisar diretamente por cliente\n"); 
+    printf("\t2. Pesquisar diretamente por cliente\n");
+    printf("\t3. Editar cliente\n"); 
+    printf("\t4. Deletar cliente\n");
     printf("\t0. Voltar\n"); 
 
     printf("Digite sua opcao: ");
@@ -129,6 +131,7 @@ void pesquisarCliente(void){
     Cliente cliente;
     bool encontrado = false;
     char cpfPesquisa[12];
+    int opEditarEliente;
 
     system("clear || cls");
     mostradorLogo();
@@ -168,4 +171,69 @@ void pesquisarCliente(void){
         fclose(file);
     }
     digiteEnter();
+}
+
+
+void updateCliente(){
+    Cliente cliente;
+    bool encontrado = false;
+    char cpfPesquisa[12];
+    int opEditarEliente;
+
+    system("clear || cls");
+    mostradorLogo();
+    printf("#### EDITAR CLIENTE ####\n");
+
+    while(true){
+        strncpy(cpfPesquisa, input("\nDigite o cpf do cliente que voce deseja editar: "), sizeof(cpfPesquisa));
+        if (validaCPF(cpfPesquisa)){
+            break;
+        } else{
+            printf("Digite um cpf valido!\n");
+            digiteEnter();
+        }
+    }
+    FILE* file = fopen("clientes.dat", "rb+");
+
+    if (file == NULL) { 
+        printf("Erro ao abrir arquivo.\n");
+        return;
+    }   
+    while(fread(&cliente, sizeof(Cliente), 1, file) == 1){
+        if (strcmp(cliente.cpf, cpfPesquisa) == 0){
+            printf("==================================\n");
+            printf("\tCPF: %s\n", cliente.cpf);
+            printf("\tNome: %s\n", cliente.nome);
+            printf("\tEmail: %s\n", cliente.email);
+            printf("\tTelefone: %s\n", cliente.telefone);
+            printf("==================================\n");
+            printf("DIGITE AS NOVAS INFORMACOES\n");
+            char *cpf = input("Digite o CPF do cliente: ");
+            if (validaCPF(cpf)){
+                strncpy(cliente.cpf, cpf, sizeof(cliente.cpf));
+                free(cpf);
+
+                char *nome = input("Digite o nome do cliente: ");
+                strncpy(cliente.nome, nome, sizeof(cliente.nome));
+                free(nome);
+
+                char *telefone = input("Digite o telefone do cliente: ");
+                if(validaTelefone(telefone)){
+                    strncpy(cliente.telefone, telefone, sizeof(cliente.telefone));
+                    free(telefone);
+
+                    char *email = input("Digite o email do cliente: ");
+                    strncpy(cliente.email, email, sizeof(cliente.email));
+                    free(email);
+
+                   //GAMBIARRA PRA ESSA DESGRAÇA RODAR
+                    long pos = -1L;
+
+                    fseek(file, pos*sizeof(Cliente), SEEK_CUR);
+                    fwrite(&cliente, sizeof(Cliente), 1, file);
+                    fclose(file);
+                }    
+            }
+        }
+    }
 }

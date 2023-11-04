@@ -90,6 +90,10 @@ int main(){
                                 fflush(stdin);
                                 pesquisarCliente();
                                 break;
+                            case 3:
+                                fflush(stdin);
+                                updateCliente();
+                                break;
                             case 0:
                                 printf("==============================\n");
                                 break;
