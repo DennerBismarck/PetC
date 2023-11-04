@@ -8,3 +8,4 @@ struct servico {
     bool status;
 };
 int menuServicos(void);
+Servico* cadastrarServico();

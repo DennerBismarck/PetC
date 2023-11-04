@@ -4,6 +4,8 @@
 #include <ctype.h>
 #include <stdbool.h>
 
+#define MAX_INPUT_LENGTH 200
+
 /*Função da logo principal*/
 void mostradorLogo(void){
     printf("       /^-^\\         /^-----^\"\n");
@@ -20,15 +22,27 @@ void mostradorLogo(void){
 }
 
 /*Inspirado no LeLinha de Flavius Gorgônio*/
+
+/*GAMBIARRA PRO INPUT COM FGFETS PQ O DIABO DO C NÃO SUPORTA GETLINE EM MUITOS SISTEMAS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA*/
 char *input(const char *entrada) {
-    char *buffer = NULL;
-    size_t tamanhoBuffer = 0;
+    char *buffer = (char *)malloc(MAX_INPUT_LENGTH);
+
+    if (buffer == NULL) {
+        fprintf(stderr, "Erro ao alocar memória\n");
+        exit(1);
+    }
+
     printf("%s", entrada);
 
-    size_t caracteres = getline(&buffer, &tamanhoBuffer, stdin);
+    if (fgets(buffer, MAX_INPUT_LENGTH, stdin) == NULL) {
+        free(buffer);
+        return NULL;
+    }
 
-    if (caracteres > 0 && buffer[caracteres - 1] == '\n') {
-        buffer[caracteres - 1] = '\0';
+    size_t tamanhoBuffer = strlen(buffer);
+
+    if (tamanhoBuffer > 0 && buffer[tamanhoBuffer - 1] == '\n') {
+        buffer[tamanhoBuffer - 1] = '\0';
     }
 
     return buffer;

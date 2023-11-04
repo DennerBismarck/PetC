@@ -5,12 +5,14 @@
 #include <stdbool.h>
 #include "biblioteca_Funcoes_auxiliares.h"
 
+/*Todas as funções de CRUD foram diretamente feitas com base nos Slides passados em aula*/
+
 typedef struct cliente Cliente;
 struct cliente {
-    char nome[81];
-    char cpf[11];
-    char email[41];
-    char telefone[11];
+    char nome[82];
+    char cpf[12];
+    char email[42];
+    char telefone[12];
     bool status;
 };
 
@@ -65,6 +67,10 @@ Cliente* cadastrarCliente(void){
                     printf("Erro ao abrir arquivo.");
                 }
                 fwrite(cli, sizeof(Cliente), 1, file); 
+                
+                free(cli);
+
+                fclose(file);
 
                 break;
 
@@ -78,9 +84,88 @@ Cliente* cadastrarCliente(void){
         }    
     }
 }
-void verCliente(void){
+int verCliente(void){
+    int opVerCliente;
     system("clear||cls");
     mostradorLogo();
     printf("#### VER CLIENTE ####\n");
-    printf("#### EM DESENVOLVIMENTO ####\n");       
+    printf("\t1. Listar todos os clientes\n");
+    printf("\t2. Pesquisar diretamente por cliente\n"); 
+    printf("\t0. Voltar\n"); 
+
+    printf("Digite sua opcao: ");
+    scanf("%d", &opVerCliente);
+    return opVerCliente;       
+}
+
+void listarCliente(void){
+    Cliente cliente;
+    system("clear || cls");
+    mostradorLogo();
+    printf("#### LISTAGEM DE CLIENTES ####\n");
+
+    FILE* file = fopen("clientes.dat", "rb");
+
+    if (file == NULL){
+        printf("Erro ao abrir arquivo.");
+    }
+
+
+    while(fread(&cliente, sizeof(Cliente), 1, file) == 1){
+        if(cliente.status == true){
+            printf("==================================\n");
+            printf("\tCPF: %s\n", cliente.cpf);
+            printf("\tNome: %s\n", cliente.nome);
+            printf("\tEmail: %s\n", cliente.email);
+            printf("\tTelefone: %s\n", cliente.telefone);
+            printf("==================================\n");
+        }
+    }
+    digiteEnter();
+    fclose(file);
+}
+
+void pesquisarCliente(void){
+    Cliente cliente;
+    bool encontrado = false;
+    char cpfPesquisa[12];
+
+    system("clear || cls");
+    mostradorLogo();
+    printf("#### PESQUISAR CLIENTE ####\n");
+    while(true){
+        strncpy(cpfPesquisa, input("\nDigite o cpf do cliente que voce deseja pesquisar: "), sizeof(cpfPesquisa));
+        if (validaCPF(cpfPesquisa)){
+            break;
+        } else{
+            printf("Digite um cpf valido!\n");
+            digiteEnter();
+        }
+    }
+    
+    FILE * file = fopen("clientes.dat","rb");
+
+    if (file == NULL){
+        printf("Erro ao abrir arquivo.");
+    }
+
+    while(fread(&cliente, sizeof(Cliente), 1, file) == 1){
+        if(strcmp(cliente.cpf, cpfPesquisa) == 0){
+            printf("==================================\n");
+            printf("\tCPF: %s\n", cliente.cpf);
+            printf("\tNome: %s\n", cliente.nome);
+            printf("\tEmail: %s\n", cliente.email);
+            printf("\tTelefone: %s\n", cliente.telefone);
+            printf("==================================\n");
+            encontrado = true;
+            fclose(file);
+            break;
+        }
+    }
+
+    if (encontrado == false){
+        printf("Cliente nao encontrado! \n");
+        fclose(file);
+    }
+    digiteEnter();
 }

@@ -31,6 +31,7 @@ int main(){
     int opmenuConsultas;
     int opmenuProcedimentos;
     int opmenuClientes;
+    int opmenuVerCliente;
 
     do{
         opMenuPrincipal = menuPrincipal();
@@ -78,8 +79,26 @@ int main(){
                         cadastrarCliente(); 
                         break;
                     case 2:
-                        fflush(stdin);
-                        verCliente();
+                        do{
+                            opmenuVerCliente = verCliente();
+                            switch (opmenuVerCliente){
+                            case 1:
+                                fflush(stdin);
+                                listarCliente();
+                                break;
+                            case 2:
+                                fflush(stdin);
+                                pesquisarCliente();
+                                break;
+                            case 0:
+                                printf("==============================\n");
+                                break;
+                            default:
+                                fflush(stdin);
+                                printf("Digite novamente!\n");
+                                break;
+                            }
+                        }while(opmenuVerCliente!=0);
                         break;
                     case 0:
                         fflush(stdin);

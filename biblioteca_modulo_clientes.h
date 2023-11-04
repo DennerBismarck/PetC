@@ -11,4 +11,6 @@ struct cliente {
 
 int menuCliente(void);
 Cliente* cadastrarCliente(void);
-void verCliente(void);
+int verCliente(void);
+void listarCliente(void);
+void pesquisarCliente(void);

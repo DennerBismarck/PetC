@@ -34,7 +34,7 @@ int menuServicos(){
 
 }
 
-void cadastrarServico(){
+Servico* cadastrarServico(){
     system("clear||cls");
     mostradorLogo();
     Servico *ser;
@@ -57,7 +57,17 @@ void cadastrarServico(){
 
             ser->status = true;
 
+            /*Trecho que salvará em arquivo*/
+            FILE* file = fopen("servicos.dat", "ab");
+
+            if (file == NULL){
+                printf("Erro ao abrir arquivo.");
+            }
+            fwrite(ser, sizeof(Servico), 1, file); 
+
+            free(ser);
             break;
+            
         }
     }
 }
