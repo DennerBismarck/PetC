@@ -31,6 +31,27 @@ int menuCliente(void){
     return opMenuCliente;      
 }
 /*Subfunções do menu clientes*/
+bool verificaCPFRepetido(const char* CPFVerificado){
+    Cliente cliente;
+    bool encontrado = false;
+
+    FILE * file = fopen("clientes.dat","rb");
+
+    while(fread(&cliente, sizeof(Cliente), 1, file) == 1){
+        if(strcmp(cliente.cpf, CPFVerificado) == 0){
+            printf("Ja existe um cliente cadastrado com este cpf!\n");
+            encontrado = true;
+            fclose(file);
+            break;
+            return false;
+        }
+    }
+    if(encontrado == false){
+        return true;
+    }
+}
+
+
 Cliente* cadastrarCliente(void){
     Cliente *cli;
     cli = (Cliente*)malloc(sizeof(Cliente));
@@ -41,7 +62,7 @@ Cliente* cadastrarCliente(void){
         mostradorLogo();
         printf("#### CADASTRO ####\n");
         char *cpf = input("Digite o CPF do cliente: ");
-        if (validaCPF(cpf)){
+        if (validaCPF(cpf) && verificaCPFRepetido(cpf)){
             strncpy(cli->cpf, cpf, sizeof(cli->cpf));
             free(cpf);
             
@@ -64,7 +85,7 @@ Cliente* cadastrarCliente(void){
                 FILE* file = fopen("clientes.dat", "ab");
 
                 if (file == NULL){
-                    printf("Erro ao abrir arquivo.");
+                    printf("Erro ao abrir arquivo.\n");
                 }
                 fwrite(cli, sizeof(Cliente), 1, file); 
                 
