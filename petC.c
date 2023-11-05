@@ -32,6 +32,7 @@ int main(){
     int opmenuProcedimentos;
     int opmenuClientes;
     int opmenuVerCliente;
+    int opmenuServicos;
 
     do{
         opMenuPrincipal = menuPrincipal();
@@ -119,7 +120,32 @@ int main(){
                     }
                     digiteEnter();
                 } while (opmenuClientes!=0);                  
-                break;    
+                break; 
+                case 4:
+                    do{
+                        opmenuServicos = menuServicos();
+                        switch (opmenuServicos){
+                            case 1:
+                                fflush(stdin);
+                                cadastrarServico();
+                                break;  
+                            case 2:
+                                fflush(stdin);
+                                listarServicos();
+                                break;
+                            case 3:
+                                fflush(stdin);
+                                pesquisarServico();
+                            case 0:
+                                fflush(stdin);
+                                printf("======================================\n");
+                                break;
+                            default:
+                                fflush(stdin);
+                                printf("Digite novamente!\n");
+                                break;
+                        }
+                    }while (opmenuServicos != 0);   
 
             case 0:
                 printf("================================\n");

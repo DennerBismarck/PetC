@@ -9,7 +9,6 @@
 typedef struct servico Servico;
 
 struct servico {
-    int id;
     char nome[81];
     char valor[20];
 
@@ -24,7 +23,10 @@ int menuServicos(){
 
     printf("##### MENU SERVICOS #####\n");
     printf("\t1. Cadastrar novo servico\n");
-    printf("\t2. Ver Servicos\n");
+    printf("\t2. Listar todos os servicos\n");
+    printf("\t3. Procurar por servico especifico\n");
+    printf("\t4. Atualizar servico\n");
+    printf("\t5. Deletar servico\n");
     printf("\t0. Sair\n");
     printf("##########################\n");
 
@@ -41,7 +43,6 @@ Servico* cadastrarServico(){
     ser = (Servico*)malloc(sizeof(Servico));
 
     printf("#### CADASTRAR SERVICO ####\n");
-    ser->id = sizeof(Servico)+1;
 
     char *nome = input("Digite o nome do servicoo: ");
     strncpy(ser->nome, nome, sizeof(ser->nome));;
@@ -49,8 +50,8 @@ Servico* cadastrarServico(){
 
     while (true){
         char *valor = input("Digite o valor do servico (Formato R$X.XX)");
-        if(!validaValor(ser->valor)){
-            printf("Digite um valor valido.");
+        if(validaValor(valor) == false){
+            printf("Digite um valor valido.\n");
         }else{
             strncpy(ser->valor, valor, sizeof(ser->valor));
             free(valor);
@@ -66,8 +67,70 @@ Servico* cadastrarServico(){
             fwrite(ser, sizeof(Servico), 1, file); 
 
             free(ser);
+            fclose(file);
             break;
             
         }
     }
+}
+
+void listarServicos(){
+    Servico servico;
+    system("clear || cls");
+    mostradorLogo();
+    printf("#### LISTAGEM DE SERVICOS ####\n");
+
+    FILE* file = fopen("servicos.dat", "rb");
+
+    if (file == NULL){
+        printf("Erro ao abrir arquivo.");
+    }
+
+
+    while(fread(&servico, sizeof(Servico), 1, file) == 1){
+        if(servico.status == true){
+            printf("==================================\n");
+            printf("\tNome: %s\n", servico.nome);
+            printf("\tValor: %s\n", servico.valor);
+            printf("==================================\n");
+        }
+    }
+    digiteEnter();
+    fclose(file);
+}
+
+void pesquisarServico(){
+    Servico servico;
+    bool encontrado = false;
+    char nomePesquisa[81];
+
+    system("clear || cls");
+    mostradorLogo();
+    printf("#### PESQUISAR SERVICO ####\n");
+
+    strncpy(nomePesquisa, input("\nDigite o nome do servico que voce deseja pesquisar: "), sizeof(nomePesquisa));
+    
+    FILE * file = fopen("servicos.dat","rb");
+
+    if (file == NULL){
+        printf("Erro ao abrir arquivo.");
+    }
+
+    while(fread(&servico, sizeof(Servico), 1, file) == 1){
+        if(strcmp(servico.nome, nomePesquisa) == 0){
+            printf("==================================\n");
+            printf("\tNome: %s\n", servico.nome);
+            printf("\tValor: %s\n", servico.valor);
+            printf("==================================\n");
+            encontrado = true;
+            fclose(file);
+            break;
+        }
+    }
+
+    if (encontrado == false){
+        printf("Servico nao encontrado! \n");
+        fclose(file);
+    }
+    digiteEnter();
 }

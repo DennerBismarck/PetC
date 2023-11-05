@@ -177,26 +177,23 @@ bool validaData(const char *data){
 }
 
 /*Função validadora de quantias monetárias - Feita para o formato R$0.00*/
-bool validaValor(const char *dinheiro){
-    int tamanhoChar = sizeof(dinheiro);
+bool validaValor(const char *dinheiro) {
+    int tamanhoChar = strlen(dinheiro);
 
-    if (tamanhoChar < 2 || dinheiro[0] != 'R' || dinheiro[1] != '$') {
+    if (tamanhoChar < 3 || dinheiro[0] != 'R' || dinheiro[1] != '$') {
         return false;
     }
 
-    for(int i = 2; i<tamanhoChar; i++){
-        if (!verificaNumero(*dinheiro) && dinheiro[i] != '.') {
+    bool controlePontoDecimal = false;
+    for (int i = 2; i < tamanhoChar; i++) {
+        if (!isdigit(dinheiro[i]) && dinheiro[i] != '.') {
             return false;
         }
-    }
-
-    int controlePontoDecimal = 0;
-    for (int i = 2; i < tamanhoChar; i++) {
         if (dinheiro[i] == '.') {
             if (controlePontoDecimal) {
                 return false;
             }
-            controlePontoDecimal = 1;
+            controlePontoDecimal = true;
         }
     }
 
