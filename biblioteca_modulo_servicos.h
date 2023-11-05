@@ -11,3 +11,4 @@ int menuServicos(void);
 Servico* cadastrarServico();
 void listarServicos();
 void pesquisarServico();
+void updateServico();

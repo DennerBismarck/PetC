@@ -136,6 +136,11 @@ int main(){
                             case 3:
                                 fflush(stdin);
                                 pesquisarServico();
+                                break;
+                            case 4:
+                                fflush(stdin);
+                                updateServico();
+                                break;
                             case 0:
                                 fflush(stdin);
                                 printf("======================================\n");

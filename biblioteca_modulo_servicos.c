@@ -134,3 +134,52 @@ void pesquisarServico(){
     }
     digiteEnter();
 }
+
+void updateServico(){
+    Servico servico;
+    bool encontrado = false;
+    char nomePesquisa[81];
+
+    system("clear || cls");
+    mostradorLogo();
+    printf("#### EDITAR SERVICO ####\n");
+
+    strncpy(nomePesquisa, input("\nDigite o nome do servico que voce deseja editar: "), sizeof(nomePesquisa));
+
+    FILE* file = fopen("servicos.dat", "rb+");
+
+    if (file == NULL) { 
+        printf("Erro ao abrir arquivo.\n");
+        return;
+    }   
+    while(fread(&servico, sizeof(Servico), 1, file) == 1){
+        if (strcmp(servico.nome, nomePesquisa) == 0){
+            printf("==================================\n");
+            printf("\tNome: %s\n", servico.nome);
+            printf("\tValor: %s\n", servico.valor);
+            printf("==================================\n");
+            printf("DIGITE AS NOVAS INFORMACOES\n");
+            char *nome = input("Digite o nome do servicoo: ");
+            strncpy(servico.nome, nome, sizeof(servico.nome));;
+            free(nome);
+
+            while (true){
+                char *valor = input("Digite o valor do servico (Formato R$X.XX)");
+                if(validaValor(valor) == false){
+                    printf("Digite um valor valido.\n");
+                    
+                }else{
+                    strncpy(servico.valor, valor, sizeof(servico.valor));
+                    free(valor);
+                    //GAMBIARRA PRA ESSA DESGRAÇA RODAR
+                    long pos = -1L;
+
+                    fseek(file, pos*sizeof(Servico), SEEK_CUR);
+                    fwrite(&servico, sizeof(Servico), 1, file);
+                    fclose(file);
+                    break;
+                }
+            }     
+        }
+    }
+}
