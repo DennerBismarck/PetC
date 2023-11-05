@@ -141,6 +141,10 @@ int main(){
                                 fflush(stdin);
                                 updateServico();
                                 break;
+                            case 5:
+                                fflush(stdin);
+                                deleteServico();
+                                break;
                             case 0:
                                 fflush(stdin);
                                 printf("======================================\n");

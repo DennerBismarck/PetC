@@ -12,3 +12,5 @@ Servico* cadastrarServico();
 void listarServicos();
 void pesquisarServico();
 void updateServico();
+void deleteServico();
+void checaExistenciaServico(const char* nomeVerificado);

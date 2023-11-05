@@ -31,7 +31,7 @@ int menuCliente(void){
     return opMenuCliente;      
 }
 /*Subfunções do menu clientes*/
-bool verificaCPFRepetido(const char* CPFVerificado){
+bool verificaExistenciaCPF(const char* CPFVerificado){
     Cliente cliente;
     bool encontrado = false;
 
@@ -39,7 +39,6 @@ bool verificaCPFRepetido(const char* CPFVerificado){
 
     while(fread(&cliente, sizeof(Cliente), 1, file) == 1){
         if(strcmp(cliente.cpf, CPFVerificado) == 0){
-            printf("Ja existe um cliente cadastrado com este cpf!\n");
             encontrado = true;
             fclose(file);
             break;
@@ -62,7 +61,7 @@ Cliente* cadastrarCliente(void){
         mostradorLogo();
         printf("#### CADASTRO ####\n");
         char *cpf = input("Digite o CPF do cliente: ");
-        if (validaCPF(cpf) && verificaCPFRepetido(cpf)){
+        if (validaCPF(cpf) && verificaExistenciaCPF(cpf)){
             strncpy(cli->cpf, cpf, sizeof(cli->cpf));
             free(cpf);
             
@@ -100,7 +99,7 @@ Cliente* cadastrarCliente(void){
                 digiteEnter();
             }
         }else{
-            printf("Digite um cpf valido.\n");
+            printf("CPF invalido ou inexistente\n");
             digiteEnter();
         }    
     }

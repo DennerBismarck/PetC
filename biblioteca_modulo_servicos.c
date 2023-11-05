@@ -36,6 +36,25 @@ int menuServicos(){
 
 }
 
+bool checaExistenciaServico(const char* nomeVerificado){
+    Servico servico;
+    bool encontrado = false;
+
+    FILE * file = fopen("servicos.dat","rb");
+
+    while(fread(&servico, sizeof(Servico), 1, file) == 1){
+        if(strcmp(servico.nome, nomeVerificado) == 0 && servico.status == true){
+            encontrado = true;
+            fclose(file);
+            break;
+            return false;
+        }
+    }
+    if(encontrado == false){
+        return true;
+    }
+}
+
 Servico* cadastrarServico(){
     system("clear||cls");
     mostradorLogo();
@@ -44,33 +63,42 @@ Servico* cadastrarServico(){
 
     printf("#### CADASTRAR SERVICO ####\n");
 
-    char *nome = input("Digite o nome do servicoo: ");
-    strncpy(ser->nome, nome, sizeof(ser->nome));;
-    free(nome);
-
     while (true){
-        char *valor = input("Digite o valor do servico (Formato R$X.XX)");
-        if(validaValor(valor) == false){
-            printf("Digite um valor valido.\n");
-        }else{
-            strncpy(ser->valor, valor, sizeof(ser->valor));
-            free(valor);
+        char *nome = input("Digite o nome do servicoo: ");
+        if (checaExistenciaServico(nome)){
+            strncpy(ser->nome, nome, sizeof(ser->nome));;
+            free(nome);
 
-            ser->status = true;
+            while (true){
+                char *valor = input("Digite o valor do servico (Formato R$X.XX)");
+                if(validaValor(valor) == false){
+                    printf("Digite um valor valido.\n");
+                }else{
+                    strncpy(ser->valor, valor, sizeof(ser->valor));
+                    free(valor);
 
-            /*Trecho que salvará em arquivo*/
-            FILE* file = fopen("servicos.dat", "ab");
+                    ser->status = true;
 
-            if (file == NULL){
-                printf("Erro ao abrir arquivo.");
+                    /*Trecho que salvará em arquivo*/
+                    FILE* file = fopen("servicos.dat", "ab");
+
+                    if (file == NULL){
+                        printf("Erro ao abrir arquivo.");
+                    }
+                    fwrite(ser, sizeof(Servico), 1, file); 
+
+                    free(ser);
+                    fclose(file);
+                    break;
+                    
+                }
             }
-            fwrite(ser, sizeof(Servico), 1, file); 
-
-            free(ser);
-            fclose(file);
             break;
-            
+        } else{
+            printf("Ja existe um servico cadastrado com este nome!\n");
         }
+
+        digiteEnter();
     }
 }
 
@@ -182,4 +210,40 @@ void updateServico(){
             }     
         }
     }
+}
+
+void deleteServico(){
+    Servico servico;
+    bool encontrado = false;
+    char nomePesquisa[81];
+
+    system("clear || cls");
+    mostradorLogo();
+    printf("#### DELETAR SERVICO ####\n");
+
+    strncpy(nomePesquisa, input("\nDigite o nome do servico que voce deseja deletar: "), sizeof(nomePesquisa));
+
+    FILE* file = fopen("servicos.dat", "rb+");
+
+    if (file == NULL) { 
+        printf("Erro ao abrir arquivo.\n");
+        return;
+    }   
+    while(fread(&servico, sizeof(Servico), 1, file) == 1){
+        if (strcmp(servico.nome, nomePesquisa) == 0){
+            printf("==================================\n");
+            printf("\tNome: %s\n", servico.nome);
+            printf("\tValor: %s\n", servico.valor);
+            printf("==================================\n");            
+            servico.status = false;
+
+            long pos = -1L;
+
+            fseek(file, pos*sizeof(Servico), SEEK_CUR);
+            fwrite(&servico, sizeof(Servico), 1, file);
+            fclose(file);
+            break;
+        }
+    }
+    digiteEnter();    
 }
