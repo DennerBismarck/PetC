@@ -131,7 +131,6 @@ void pesquisarCliente(void){
     Cliente cliente;
     bool encontrado = false;
     char cpfPesquisa[12];
-    int opEditarEliente;
 
     system("clear || cls");
     mostradorLogo();
@@ -178,7 +177,6 @@ void updateCliente(){
     Cliente cliente;
     bool encontrado = false;
     char cpfPesquisa[12];
-    int opEditarEliente;
 
     system("clear || cls");
     mostradorLogo();
@@ -236,4 +234,51 @@ void updateCliente(){
             }
         }
     }
+}
+
+/*Exclusão do tipo lógica*/
+void deleteCliente(){
+    Cliente cliente;
+    bool encontrado = false;
+    char cpfPesquisa[12];
+
+    system("clear || cls");
+    mostradorLogo();
+    printf("#### DELETAR CLIENTE ####\n");
+
+    while(true){
+        strncpy(cpfPesquisa, input("\nDigite o cpf do cliente que voce deseja deletar: "), sizeof(cpfPesquisa));
+        if (validaCPF(cpfPesquisa)){
+            break;
+        } else{
+            printf("Digite um cpf valido!\n");
+            digiteEnter();
+        }
+    }
+    FILE* file = fopen("clientes.dat", "rb+");
+
+    if (file == NULL) { 
+        printf("Erro ao abrir arquivo.\n");
+        return;
+    }   
+    while(fread(&cliente, sizeof(Cliente), 1, file) == 1){
+        if (strcmp(cliente.cpf, cpfPesquisa) == 0){
+            printf("==================================\n");
+            printf("\tCPF: %s\n", cliente.cpf);
+            printf("\tNome: %s\n", cliente.nome);
+            printf("\tEmail: %s\n", cliente.email);
+            printf("\tTelefone: %s\n", cliente.telefone);
+            printf("==================================\n");
+            fflush(stdin);
+
+            cliente.status = false;
+            long pos = -1L;
+            fseek(file, pos*sizeof(Cliente), SEEK_CUR);
+            fwrite(&cliente, sizeof(Cliente), 1, file);
+            fclose(file);
+
+        
+        }
+    }
+    digiteEnter();
 }

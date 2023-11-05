@@ -94,6 +94,10 @@ int main(){
                                 fflush(stdin);
                                 updateCliente();
                                 break;
+                            case 4:
+                                fflush(stdin);
+                                deleteCliente();
+                                break;
                             case 0:
                                 printf("==============================\n");
                                 break;
