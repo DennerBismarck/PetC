@@ -33,6 +33,7 @@ int main(){
     int opmenuClientes;
     int opmenuVerCliente;
     int opmenuServicos;
+    int opmenuAnimais;
 
     do{
         opMenuPrincipal = menuPrincipal();
@@ -121,41 +122,62 @@ int main(){
                     digiteEnter();
                 } while (opmenuClientes!=0);                  
                 break; 
-                case 4:
-                    do{
-                        opmenuServicos = menuServicos();
-                        switch (opmenuServicos){
-                            case 1:
-                                fflush(stdin);
-                                cadastrarServico();
-                                break;  
-                            case 2:
-                                fflush(stdin);
-                                listarServicos();
-                                break;
-                            case 3:
-                                fflush(stdin);
-                                pesquisarServico();
-                                break;
-                            case 4:
-                                fflush(stdin);
-                                updateServico();
-                                break;
-                            case 5:
-                                fflush(stdin);
-                                deleteServico();
-                                break;
-                            case 0:
-                                fflush(stdin);
-                                printf("======================================\n");
-                                break;
-                            default:
-                                fflush(stdin);
-                                printf("Digite novamente!\n");
-                                break;
-                        }
-                    }while (opmenuServicos != 0);   
-
+            case 4:
+                do{
+                    opmenuServicos = menuServicos();
+                    switch (opmenuServicos){
+                        case 1:
+                            fflush(stdin);
+                            cadastrarServico();
+                            break;  
+                        case 2:
+                            fflush(stdin);
+                            listarServicos();
+                            break;
+                        case 3:
+                            fflush(stdin);
+                            pesquisarServico();
+                            break;
+                        case 4:
+                            fflush(stdin);
+                            updateServico();
+                            break;
+                        case 5:
+                            fflush(stdin);
+                            deleteServico();
+                            break;
+                        case 0:
+                            fflush(stdin);
+                            printf("======================================\n");
+                            break;
+                        default:
+                            fflush(stdin);
+                            printf("Digite novamente!\n");
+                            break;
+                    }
+                }while (opmenuServicos != 0);  
+                break; 
+            case 5:
+                do{
+                    opmenuAnimais = menuAnimal();
+                    switch (opmenuAnimais){
+                        case 1:
+                            fflush(stdin);
+                            createAnimal();
+                            break;
+                        case 2:
+                            fflush(stdin);
+                            readAnimal();
+                        case 0:
+                            fflush(stdin);
+                            printf("======================================\n");
+                            break;                            
+                        default:
+                            printf("Digite novamente!\n");
+                            break;
+                        }                        
+                }while(opmenuAnimais != 0);
+                break;
             case 0:
                 printf("================================\n");
                 break;

@@ -38,7 +38,7 @@ bool verificaExistenciaCPF(const char* CPFVerificado){
     FILE * file = fopen("clientes.dat","rb");
 
     while(fread(&cliente, sizeof(Cliente), 1, file) == 1){
-        if(strcmp(cliente.cpf, CPFVerificado) == 0){
+        if(strcmp(cliente.cpf, CPFVerificado) == 0 && cliente.status == true){
             encontrado = true;
             fclose(file);
             break;
@@ -99,7 +99,7 @@ Cliente* cadastrarCliente(void){
                 digiteEnter();
             }
         }else{
-            printf("CPF invalido ou inexistente\n");
+            printf("CPF invalido ou ja existente\n");
             digiteEnter();
         }    
     }

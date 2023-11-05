@@ -1,3 +1,9 @@
 int menuAnimal(void);
-void createAnimal(void);
-void meusAnimais(void);
+typedef struct animal Animal;
+struct animal{
+    char descricao[200];
+    char cpfDoCliente[11];
+};
+
+Animal* createAnimal();
+void readAnimal();
