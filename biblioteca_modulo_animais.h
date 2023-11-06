@@ -7,3 +7,5 @@ struct animal{
 
 Animal* createAnimal();
 void readAnimal();
+void updateAnimal();
+void deleteAnimal();

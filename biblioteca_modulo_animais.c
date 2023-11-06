@@ -6,8 +6,12 @@
 #include "biblioteca_Funcoes_auxiliares.h"
 #include "biblioteca_modulo_clientes.h"
 
+int contadorID = 1;
+
+
 typedef struct animal Animal;
 struct animal{
+    int id;
     char descricao[200];
     char cpfDoCliente[12];
 
@@ -73,6 +77,9 @@ Animal* createAnimal(void){
 
                 strncpy(ani->descricao, desc,sizeof(ani->descricao));
                 free(desc);
+                
+                ani->id = contadorID;
+                contadorID = contadorID+1;
 
                 ani->status = true;
 
@@ -120,14 +127,13 @@ void readAnimal(void){
     }
 
     while(fread(&animal, sizeof(Animal), 1, file) == 1){
-        if(strcmp(animal.cpfDoCliente, cpfPesquisa) == 0){
+        if(strcmp(animal.cpfDoCliente, cpfPesquisa) == 0 && animal.status == true){
             printf("==================================\n");
+            printf("\tID do animal: %i\n", animal.id);
             printf("\tCPF do cliente: %s\n", animal.cpfDoCliente);
             printf("\tDescricao: %s\n", animal.descricao);
             printf("==================================\n");
             encontrado = true;
-        }else{
-            printf("%s %s", animal.cpfDoCliente, cpfPesquisa);
         }
     }
     if (encontrado == false){
@@ -135,4 +141,110 @@ void readAnimal(void){
     }
     fclose(file);
     digiteEnter();
+}
+
+void  updateAnimal(){
+    readAnimal();
+
+    Animal animal;
+    bool encontrado = false;
+    int escolhaNumero;
+
+    while (true){
+        const char* escolha = input("Digite o id do animal que voce deseja editar: ");
+        if(verificaNumero(*escolha)){
+            escolhaNumero = atoi(escolha);
+            break;
+        }else{
+            printf("Digite um id valido!\n");
+        }
+    }
+    
+
+    FILE * file = fopen("animais.dat","rb+");
+
+    if (file == NULL){
+        printf("Erro ao abrir arquivo.");
+    }
+
+    while(fread(&animal, sizeof(Animal), 1, file) == 1){
+        if(animal.id == escolhaNumero){
+            printf("==================================\n");
+            printf("\tID do animal: %i\n", animal.id);
+            printf("\tCPF do cliente: %s\n", animal.cpfDoCliente);
+            printf("\tDescricao: %s\n", animal.descricao);
+            printf("==================================\n");
+            encontrado = true;
+
+            while (true){
+                char *cpf = input("Digite o CPF do dono: ");
+                if (validaCPF(cpf)){
+                        strncpy(animal.cpfDoCliente, cpf, sizeof(animal.cpfDoCliente));
+                        free(cpf);
+
+                        char * desc = input("Digite a descricao do animal: ");
+                        strncpy(animal.descricao, desc, sizeof(animal.descricao));
+                        free(desc);
+
+                        long pos = -1L;
+                        fseek(file, pos*sizeof(Animal), SEEK_CUR);
+                        fwrite(&animal, sizeof(Animal), 1, file);
+                        break;
+
+                }else{
+                    printf("Digite um cpf valido!");
+                }
+            }
+            break;
+        }
+    }
+    if (encontrado == false){
+        printf("Digite um id valido! \n");
+    }
+    fclose(file);
+    digiteEnter();
+}
+
+void deleteAnimal(){
+    readAnimal();
+
+    Animal animal;
+    bool encontrado = false;
+    int escolhaNumero;
+
+    while (true){
+        const char* escolha = input("Digite o id do animal que voce deseja deletar: ");
+        if(verificaNumero(*escolha)){
+            escolhaNumero = atoi(escolha);
+            break;
+        }else{
+            printf("Digite um id valido!\n");
+        }
+    }
+    
+
+    FILE * file = fopen("animais.dat","rb+");
+
+    if (file == NULL){
+        printf("Erro ao abrir arquivo.");
+    }
+
+    while(fread(&animal, sizeof(Animal), 1, file) == 1){
+        if(animal.id == escolhaNumero){
+            encontrado = true;
+
+            animal.status = false;
+
+            long pos = -1L;
+            fseek(file, pos*sizeof(Animal), SEEK_CUR);
+            fwrite(&animal, sizeof(Animal), 1, file);
+            break;
+
+        }
+    }
+    if (encontrado == false){
+        printf("Digite um id valido! \n");
+    }
+    fclose(file);
+    digiteEnter();    
 }

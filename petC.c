@@ -168,6 +168,15 @@ int main(){
                         case 2:
                             fflush(stdin);
                             readAnimal();
+                            break;
+                        case 3:
+                            fflush(stdin);
+                            updateAnimal();
+                            break;
+                        case 4:
+                            fflush(stdin);
+                            deleteAnimal();
+                            break;
                         case 0:
                             fflush(stdin);
                             printf("======================================\n");
