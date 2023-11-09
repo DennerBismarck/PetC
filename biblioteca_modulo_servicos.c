@@ -5,10 +5,13 @@
 #include <stdbool.h>
 #include "biblioteca_Funcoes_auxiliares.h"
 
+int contadorIDServico = 1;
+
 /*Struck de servicos*/
 typedef struct servico Servico;
 
 struct servico {
+    int id;
     char nome[81];
     char valor[20];
 
@@ -34,6 +37,25 @@ int menuServicos(){
     scanf("%d", &opMenuServicos);
     return opMenuServicos;   
 
+}
+
+bool checaServicoID(const int* idServico){
+    Servico servico;
+    bool encontrado = false;
+
+    FILE * file = fopen("servicos.dat","rb");
+
+    while(fread(&servico, sizeof(Servico), 1, file) == 1){
+        if(servico.id == *idServico && servico.status == true){
+            encontrado = true;
+            fclose(file);
+            break;
+            return false;
+        }
+    }
+    if(encontrado == false){
+        return true;
+    }
 }
 
 bool checaExistenciaServico(const char* nomeVerificado){
@@ -78,9 +100,12 @@ Servico* cadastrarServico(){
                     free(valor);
 
                     ser->status = true;
+                    ser->id = contadorIDServico;
+                    contadorIDServico = contadorIDServico+1;
 
                     /*Trecho que salvará em arquivo*/
                     FILE* file = fopen("servicos.dat", "ab");
+
 
                     if (file == NULL){
                         printf("Erro ao abrir arquivo.");
@@ -118,6 +143,7 @@ void listarServicos(){
     while(fread(&servico, sizeof(Servico), 1, file) == 1){
         if(servico.status == true){
             printf("==================================\n");
+            printf("\tID: %i\n",servico.id);
             printf("\tNome: %s\n", servico.nome);
             printf("\tValor: %s\n", servico.valor);
             printf("==================================\n");
@@ -147,6 +173,7 @@ void pesquisarServico(){
     while(fread(&servico, sizeof(Servico), 1, file) == 1){
         if(strcmp(servico.nome, nomePesquisa) == 0){
             printf("==================================\n");
+            printf("\tID: %i\n",servico.id);
             printf("\tNome: %s\n", servico.nome);
             printf("\tValor: %s\n", servico.valor);
             printf("==================================\n");

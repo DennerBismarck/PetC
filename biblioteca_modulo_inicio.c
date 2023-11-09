@@ -19,11 +19,11 @@ int menuPrincipal(void){
     printf("\t3. Clientes\n");
     printf("\t4. Servicos\n");
     printf("\t5. Animais\n");
-    printf("\t0. Sair\n");
+    printf("\t6. Sair\n");
     printf("##########################\n");
 
     printf("Digite sua opcao: ");
-    scanf("%d", &opMenuPrincipal); fflush(stdin);
+    scanf("%i", &opMenuPrincipal); fflush(stdin);
     return opMenuPrincipal;   
 
 }

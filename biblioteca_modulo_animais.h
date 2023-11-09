@@ -9,3 +9,4 @@ Animal* createAnimal();
 void readAnimal();
 void updateAnimal();
 void deleteAnimal();
+bool checaAnimalID(const int* idAnimal);

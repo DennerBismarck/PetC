@@ -51,6 +51,7 @@ char *input(const char *entrada) {
 void digiteEnter(void){
     printf("Digite Enter para continuar\n");
     getchar();  
+    fflush(stdin);
     printf("====================================\n");
 }
 
@@ -214,3 +215,33 @@ bool validaTelefone(char* fone){
   return true;
 }
 
+/*Feito para o formato HH:MM*/
+bool validaHora(const char horario[6]) {
+    if (strlen(horario) != 5) {
+        return false;
+    }
+
+    for (int i = 0; i < 2; i++) {
+        if (!isdigit(horario[i])) {
+            return false;
+        }
+    }
+
+    if (horario[2] != ':') {
+        return false;
+    }
+    for (int i = 3; i < 5; i++) {
+        if (!isdigit(horario[i])) {
+            return false;
+        }
+    }
+    
+    int hora = (horario[0] - '0') * 10 + (horario[1] - '0');
+    int minutos = (horario[3] - '0') * 10 + (horario[4] - '0');
+
+    if (hora < 0 || hora > 23 || minutos < 0 || minutos > 59) {
+        return false;
+    }
+
+    return true;
+}

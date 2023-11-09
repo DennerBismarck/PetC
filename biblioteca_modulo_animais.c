@@ -8,7 +8,6 @@
 
 int contadorID = 1;
 
-
 typedef struct animal Animal;
 struct animal{
     int id;
@@ -17,6 +16,25 @@ struct animal{
 
     bool status;
 };
+
+bool checaAnimalID(const int* idAnimal){
+    Animal animal;
+    bool encontrado = false;
+
+    FILE * file = fopen("animal.dat","rb");
+
+    while(fread(&animal, sizeof(Animal), 1, file) == 1){
+        if(animal.id == *idAnimal && animal.status == true){
+            encontrado = true;
+            fclose(file);
+            break;
+            return false;
+        }
+    }
+    if(encontrado == false){
+        return true;
+    }
+}
 
 bool checaExistenciaAnimal(const char *animalVerificado, const char *cpfVerificado) {
     Animal animal;

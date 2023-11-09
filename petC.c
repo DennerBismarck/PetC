@@ -64,7 +64,6 @@ int main(){
                                 printf("Digite novamente!");
                                 break;                                         
                         }
-                        digiteEnter(); 
                     }while (opmenuAtendimentos!=0);            
                     break;
 
@@ -119,7 +118,6 @@ int main(){
                         printf("Digite novamente!\n");
                         break;
                     }
-                    digiteEnter();
                 } while (opmenuClientes!=0);                  
                 break; 
             case 4:
@@ -184,18 +182,23 @@ int main(){
                         default:
                             printf("Digite novamente!\n");
                             break;
-                        }                        
+                        }
+                        digiteEnter();                        
                 }while(opmenuAnimais != 0);
                 break;
-            case 0:
+            case 6:
+            fflush(stdin);
                 printf("================================\n");
                 break;
             default:
-                printf("Digite novamente!");
+                fflush(stdin);
+                printf("Digite novamente!\n");
                 printf("====================================\n"); 
                 break;
+                digiteEnter();
             digiteEnter();       
         }
-    } while (opMenuPrincipal != 0);
+        digiteEnter();
+    } while (opMenuPrincipal != 6);
     return 0;
 }
