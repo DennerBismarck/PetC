@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include "biblioteca_Funcoes_auxiliares.h"
 
-int contadorIDServico = 1;
+int ultimoID;
 
 /*Struck de servicos*/
 typedef struct servico Servico;
@@ -39,23 +39,43 @@ int menuServicos(){
 
 }
 
-bool checaServicoID(const int* idServico){
+int retornaUltimoIDServico() {
+    Servico servico;
+
+    FILE *file = fopen("servicos.dat", "rb");
+
+    int ultimoID = 0;
+
+    if (file != NULL) {
+        fseek(file, -sizeof(Servico), SEEK_END);
+
+        if (fread(&servico, sizeof(Servico), 1, file) == 1) {
+            ultimoID = servico.id;
+            return ultimoID;
+        }
+
+        fclose(file);
+    }
+
+    return 0; 
+}
+
+bool checaServicoID(const int* idServico) {
     Servico servico;
     bool encontrado = false;
 
-    FILE * file = fopen("servicos.dat","rb");
+    FILE * file = fopen("servicos.dat", "rb");
 
-    while(fread(&servico, sizeof(Servico), 1, file) == 1){
-        if(servico.id == *idServico && servico.status == true){
+    while (fread(&servico, sizeof(Servico), 1, file) == 1) {
+        if (servico.id == *idServico && servico.status == true) {
             encontrado = true;
-            fclose(file);
             break;
-            return false;
         }
     }
-    if(encontrado == false){
-        return true;
-    }
+
+    fclose(file); 
+
+    return encontrado;  
 }
 
 bool checaExistenciaServico(const char* nomeVerificado){
@@ -100,8 +120,8 @@ Servico* cadastrarServico(){
                     free(valor);
 
                     ser->status = true;
-                    ser->id = contadorIDServico;
-                    contadorIDServico = contadorIDServico+1;
+
+                    ser->id = retornaUltimoIDServico()+1;                    
 
                     /*Trecho que salvará em arquivo*/
                     FILE* file = fopen("servicos.dat", "ab");

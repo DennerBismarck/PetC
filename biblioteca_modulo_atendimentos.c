@@ -8,7 +8,7 @@
 #include "biblioteca_modulo_clientes.h"
 #include "biblioteca_modulo_servicos.h"
 
-int contadorIDAtendimento = 1;
+int ultimoIDAtendimento;
 
 
 typedef struct atendimento Atendimento;
@@ -51,6 +51,28 @@ bool verificaExistenciaAtendimento(char dataAgenda[9], char horaAgenda[5]){
     return true;
 }
 
+
+int retornaUltimoIDatendimento() {
+    Atendimento atendimento;
+
+    FILE *file = fopen("atendimentos.dat", "rb");
+
+    int ultimoIDAtendimento = 0;
+
+    if (file != NULL) {
+        fseek(file, -sizeof(Atendimento), SEEK_END);
+
+        if (fread(&atendimento, sizeof(Atendimento), 1, file) == 1) {
+            ultimoIDAtendimento = atendimento.id;
+            return ultimoIDAtendimento;
+        }
+
+        fclose(file);
+    }
+
+    return 0; 
+}
+
 /*Função do menu Atendimentos*/
 int menuAtendimentos(void){
     int opAtendimentos;
@@ -58,8 +80,9 @@ int menuAtendimentos(void){
     mostradorLogo();
     printf("##### MENU ATENDIMENTOS #####\n");
     printf("\t1. Agendar novo atendimento\n");
-    printf("\t2. Tabela de atendimentos\n");
-    printf("\t3. Minhas agendas\n");
+    printf("\t2. Listar atendimentos\n");
+    printf("\t3. Atendimentos de um cliente\n");
+    printf("\t4. Atendimentos por data\n");
     printf("\t0. Sair\n");
     printf("##########################\n");
 
@@ -67,7 +90,7 @@ int menuAtendimentos(void){
     scanf("%d", &opAtendimentos);
     return opAtendimentos;      
 }
-Atendimento* agendarProcedimento(){
+Atendimento* agendarProcedimento() {
     system("clear||cls");
     mostradorLogo();
     Atendimento *ate;
@@ -75,13 +98,15 @@ Atendimento* agendarProcedimento(){
 
     printf("#### AGENDAR ATENDIMENTO ####\n");
 
-    while (1) {
+    bool agendamentoConcluido = false;
+
+    while (!agendamentoConcluido) {
         char *cpf = input("Digite o cpf do cliente que esta agendando: ");
         if (!verificaExistenciaCPF(cpf)) {
             strncpy(ate->cpfDoCliente, cpf, sizeof(ate->cpfDoCliente));
             free(cpf);
 
-            while (1) {
+            while (!agendamentoConcluido) {
                 listarServicos();
                 printf("Digite o id do servico que voce deseja agendar: ");
 
@@ -89,24 +114,24 @@ Atendimento* agendarProcedimento(){
                 scanf("%i", &ser);
                 fflush(stdin);
 
-                if (!checaServicoID(&ser)) {
+                if (checaServicoID(&ser)) {
                     ate->idDoservico = ser;
 
-                    while (1) {
+                    while (!agendamentoConcluido) {
                         readAnimal();
                         int ani;
                         printf("Digite o id do animal que sera atendido: ");
                         scanf("%i", &ani);
                         fflush(stdin);
-                        
+
                         if (checaAnimalID(&ani)) {
                             ate->idDoanimal = ani;
 
-                            while (1) {
+                            while (!agendamentoConcluido) {
                                 char *data = input("Digite a data do atendimento (DD/MM/AAAA): ");
                                 if (validaData(data)) {
 
-                                    while (1) {
+                                    while (!agendamentoConcluido) {
                                         char *hora = input("Digite a hora do atendimento (HH:MM): ");
                                         if (validaHora(hora)) {
                                             if (verificaExistenciaAtendimento(data, hora)) {
@@ -116,8 +141,7 @@ Atendimento* agendarProcedimento(){
                                                 strncpy(ate->hora, hora, sizeof(ate->hora));
                                                 free(hora);
 
-                                                ate->id = contadorIDAtendimento;
-                                                contadorIDAtendimento = contadorIDAtendimento + 1;
+                                                ate->id = retornaUltimoIDatendimento()+1;
 
                                                 FILE* file = fopen("atendimentos.dat", "ab");
 
@@ -128,8 +152,8 @@ Atendimento* agendarProcedimento(){
                                                 fwrite(ate, sizeof(Atendimento), 1, file);
                                                 fclose(file);
                                                 free(ate);
-                                                break;
 
+                                                agendamentoConcluido = true; 
                                             } else {
                                                 printf("Conflito na agenda!\n");
                                             }
@@ -137,11 +161,10 @@ Atendimento* agendarProcedimento(){
                                             printf("Hora invalida!\n");
                                         }
                                     }
-                                    break;
                                 } else {
                                     printf("Data invalida!\n");
                                 }
-                            }break;
+                            }
                         } else {
                             printf("ID do animal invalido!\n");
                         }
@@ -153,10 +176,11 @@ Atendimento* agendarProcedimento(){
         } else {
             printf("CPF nao cadastrado!\n");
         }
-       break;
     }
+
     digiteEnter();
 }
+
 
 
 void verAgendamentos(){

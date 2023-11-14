@@ -6,7 +6,7 @@
 #include "biblioteca_Funcoes_auxiliares.h"
 #include "biblioteca_modulo_clientes.h"
 
-int contadorID = 1;
+int contadorIDAnimal;
 
 typedef struct animal Animal;
 struct animal{
@@ -59,6 +59,27 @@ bool checaExistenciaAnimal(const char *animalVerificado, const char *cpfVerifica
 }
 
 
+int retornaUltimoIDAnimal() {
+    Animal animal;
+
+    FILE *file = fopen("animais.dat", "rb");
+
+    int contadorIDAnimal = 0;
+
+    if (file != NULL) {
+        fseek(file, -sizeof(Animal), SEEK_END);
+
+        if (fread(&animal, sizeof(Animal), 1, file) == 1) {
+            contadorIDAnimal = animal.id;
+            return contadorIDAnimal;
+        }
+
+        fclose(file);
+    }
+
+    return 0; 
+}
+
 int menuAnimal(void){
     int opAnimal;
 
@@ -96,8 +117,7 @@ Animal* createAnimal(void){
                 strncpy(ani->descricao, desc,sizeof(ani->descricao));
                 free(desc);
                 
-                ani->id = contadorID;
-                contadorID = contadorID+1;
+                ani->id = retornaUltimoIDAnimal()+1;
 
                 ani->status = true;
 
