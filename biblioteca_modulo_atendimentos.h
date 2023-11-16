@@ -13,4 +13,4 @@ struct atendimento{
 int menuAtendimentos(void);
 Atendimento* agendarProcedimento();
 void verAgendamentos();
-void listarAgendamentos();
+void listarTodosAtendimentos();

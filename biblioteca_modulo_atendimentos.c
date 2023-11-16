@@ -181,7 +181,55 @@ Atendimento* agendarProcedimento() {
     digiteEnter();
 }
 
+void listarTodosAtendimentos(){
+    system("clear||cls");
+    mostradorLogo();
 
+    Atendimento atendimento;
+    Servico servico;
+    Animal animal;
+
+
+    printf("#### LISTAGEM DE TODOS OS AGENDAMENTOS ####\n");
+
+    FILE * fileAte = fopen("atendimentos.dat","rb");
+    FILE * fileAni = fopen("animais.dat","rb");
+    FILE * fileSer = fopen("servicos.dat", "rb");
+
+    if (fileAte == NULL || fileSer == NULL || fileAte == NULL){
+        printf("Erro ao ler arquivos.");
+    }
+
+    while(fread(&atendimento, sizeof(Atendimento), 1, fileAte) == 1){
+        if(atendimento.status == true){
+            printf("==================================\n");
+            printf("\tID do atendimento: %i\n", atendimento.id);
+            printf("\tCPF do cliente: %s\n", atendimento.cpfDoCliente);
+            printf("\tData: %s\n", atendimento.data);
+            printf("\tHora: %s\n", atendimento.hora);
+            while(fread(&animal, sizeof(Animal), 1, fileAni) == 1){
+                if(animal.id == atendimento.idDoanimal){
+                    printf("\tId do animal atendido: %d\n", atendimento.idDoanimal);
+                    printf("\tDescricao do animal atendido: %s\n", animal.descricao);
+                }
+            }
+            while(fread(&servico, sizeof(Servico), 1, fileSer) == 1){
+                if(servico.id == atendimento.idDoservico){
+                    printf("\tServico prestado: %s \n", servico.nome);
+                    printf("\tValor: %s \n", servico.valor);
+                }
+            }
+            printf("==================================\n");
+        }
+    }
+
+    fclose(fileAte);
+    fclose(fileAni);
+    fclose(fileSer);
+
+    digiteEnter();
+
+}
 
 void verAgendamentos(){
     system("clear||cls");

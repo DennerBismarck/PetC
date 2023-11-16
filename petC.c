@@ -53,7 +53,7 @@ int main(){
                                 break;
                             case 3:
                                 fflush(stdin);
-                                listarAgendamentos();
+                                listarTodosAtendimentos();
                                 break;         
                             case 0:
                                 fflush(stdin);
