@@ -283,20 +283,65 @@ void updateAtendimento() {
     digiteEnter();
 }
 
+void deleteAtendimento(){
+    
+    Atendimento ate;
+
+    bool encontrado = false;
+
+    int escolhaNumero;
+
+    printf("#### DELETAR ATENDIMENTO ####\n");
+
+    while (true) {
+        const char *escolha = input("Digite o id do agendamento que voce deseja deletar: ");
+        if (verificaNumero(*escolha)) {
+            escolhaNumero = atoi(escolha);
+            break;
+        } else {
+            printf("Digite um id valido!\n");
+        }
+    }
+    
+
+    FILE * file = fopen("atendimentos.dat","rb+");
+
+    if (file == NULL){
+        printf("Erro ao abrir arquivo.");
+    }
+
+    while(fread(&ate, sizeof(Atendimento), 1, file) == 1){
+        if(ate.id == escolhaNumero){
+            encontrado = true;
+
+            ate.status = false;
+
+            long pos = -1L;
+            fseek(file, pos*sizeof(Atendimento), SEEK_CUR);
+            fwrite(&ate, sizeof(Atendimento), 1, file);
+            break;
+
+        }
+    }
+    if (encontrado == false){
+        printf("Digite um id valido! \n");
+    }
+    fclose(file);
+    digiteEnter(); 
+}
 
 void selecionaAtendimento(){
     int opSelecionaAtendimento;
 
     do{
         printf("Digite 1 para editar um dos atendimentos, 2 para deletar ou 0 para continuar: ");
-        scanf("%i", &opSelecionaAtendimento);
-        fflush(stdin);
+        scanf("%i", &opSelecionaAtendimento);fflush(stdin);
         switch (opSelecionaAtendimento){
             case 1:
                 updateAtendimento();
                 break;
             case 2:
-                printf("Ai tonha\n");
+                deleteAtendimento();
                 break;    
             case 0:
                 printf("=====================\n");
@@ -360,3 +405,4 @@ void listarTodosAtendimentos() {
 
     digiteEnter();
 }
+
