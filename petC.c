@@ -49,7 +49,7 @@ int main(){
                                 break;
                               case 2:
                                 fflush(stdin);
-                                verAgendamentos();
+                               printf("Abuble\n");
                                 break;
                             case 3:
                                 fflush(stdin);
