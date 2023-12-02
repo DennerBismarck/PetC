@@ -84,7 +84,6 @@ int menuAtendimentos(void){
     printf("\t1. Agendar novo atendimento\n");
     printf("\t2. Listar atendimentos de um cliente\n");
     printf("\t3. Listar todos os agendamentos\n");
-    printf("\t4. Atendimentos por data\n");
     printf("\t0. Sair\n");
     printf("##########################\n");
 
@@ -375,8 +374,10 @@ void listarTodosAtendimentos() {
     while (fread(&atendimento, sizeof(Atendimento), 1, fileAte) == 1) {
         if (atendimento.status == true) {
             printf("==================================\n");
+
             printf("\tID do atendimento: %i\n", atendimento.id);
             printf("\tCPF do cliente: %s\n", atendimento.cpfDoCliente);
+
             printf("\tData: %s\n", atendimento.data);
             printf("\tHora: %.5s\n", atendimento.hora);
 
@@ -404,5 +405,80 @@ void listarTodosAtendimentos() {
     fclose(fileSer);
 
     digiteEnter();
+}
+
+void listarAgendamentosCliente(){
+    system("clear||cls");
+    mostradorLogo();
+
+    Atendimento atendimento;
+    Servico servico;
+    Animal animal;
+
+    bool encontrado = false;
+    char cpfPesquisa[12];
+
+    printf("#### LISTAGEM DE AGENDAMENTOS DE UM CLIENTE ####\n");
+
+    FILE* fileAte = fopen("atendimentos.dat", "rb");
+    FILE* fileAni = fopen("animais.dat", "rb");
+    FILE* fileSer = fopen("servicos.dat", "rb");
+
+    if (fileAte == NULL || fileSer == NULL || fileAni == NULL) {
+        printf("Erro ao ler arquivos.\n");
+        return;
+    }
+
+    while(true){
+        strncpy(cpfPesquisa, input("\nDigite o cpf do cliente que voce deseja pesquisar: "), sizeof(cpfPesquisa));
+        if (!verificaExistenciaCPF(cpfPesquisa)){
+            break;
+        } else{
+            printf("Digite um cpf valido!\n");
+            digiteEnter();
+        }
+    }
+
+    while (fread(&atendimento, sizeof(Atendimento), 1, fileAte) == 1) {
+        if (atendimento.status == true && strcmp(atendimento.cpfDoCliente, cpfPesquisa) == 0) {
+            encontrado = true;
+
+            printf("==================================\n");
+
+            printf("\tID do atendimento: %i\n", atendimento.id);
+            printf("\tCPF do cliente: %s\n", atendimento.cpfDoCliente);
+
+            printf("\tData: %s\n", atendimento.data);
+            printf("\tHora: %.5s\n", atendimento.hora);
+
+            
+            fseek(fileAni, (atendimento.idDoanimal - 1) * sizeof(Animal), SEEK_SET);
+            fread(&animal, sizeof(Animal), 1, fileAni);
+
+            printf("\tId do animal atendido: %d\n", atendimento.idDoanimal);
+            printf("\tDescricao do animal atendido: %s\n", &animal.descricao);
+
+            
+            fseek(fileSer, (atendimento.idDoservico - 1) * sizeof(Servico), SEEK_SET);
+            fread(&servico, sizeof(Servico), 1, fileSer);
+
+            printf("\tServico prestado: %s \n", servico.nome);
+            printf("\tValor: %s \n", servico.valor);
+
+            printf("==================================\n");
+
+        }
+    }
+    if (encontrado == false){
+        printf("Nenhum atendimento encontrado! \n");
+    }else{
+        selecionaAtendimento();
+    }
+
+    fclose(fileAte);
+    fclose(fileAni);
+    fclose(fileSer);
+
+    digiteEnter();    
 }
 

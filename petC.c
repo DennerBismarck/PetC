@@ -47,14 +47,14 @@ int main(){
                                 fflush(stdin);
                                 agendarProcedimento();
                                 break;
-                              case 2:
+                            case 2:
                                 fflush(stdin);
-                               printf("Abuble\n");
+                                listarAgendamentosCliente();
                                 break;
                             case 3:
                                 fflush(stdin);
                                 listarTodosAtendimentos();
-                                break;         
+                                break; 
                             case 0:
                                 fflush(stdin);
                                 printf("====================================\n");    
@@ -144,6 +144,10 @@ int main(){
                             fflush(stdin);
                             deleteServico();
                             break;
+                        case 6:
+                            fflush(stdin);
+                            listarServicoValor();
+                            break;
                         case 0:
                             fflush(stdin);
                             printf("======================================\n");
@@ -175,6 +179,9 @@ int main(){
                             fflush(stdin);
                             deleteAnimal();
                             break;
+                        case 5:
+                            fflush(stdin);
+                            listarTodosAnimais();
                         case 0:
                             fflush(stdin);
                             printf("======================================\n");

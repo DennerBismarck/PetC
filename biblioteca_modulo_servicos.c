@@ -30,6 +30,7 @@ int menuServicos(){
     printf("\t3. Procurar por servico especifico\n");
     printf("\t4. Atualizar servico\n");
     printf("\t5. Deletar servico\n");
+    printf("\t6. Listar servicos por valor\n");
     printf("\t0. Sair\n");
     printf("##########################\n");
 
@@ -294,4 +295,47 @@ void deleteServico(){
         }
     }
     digiteEnter();    
+}
+
+void listarServicoValor(){
+    Servico servico;
+    bool encontrado = false;
+    char *valorPesquisa;
+
+    system("clear || cls");
+    mostradorLogo();
+    printf("#### PESQUISAR SERVICO ####\n");
+
+    while (true){
+        valorPesquisa =  input("\nDigite o valor que voce deseja filtrar (R$X.XX): ");
+        if(validaValor(valorPesquisa)){
+            break;
+        }else{
+            printf("Digite um valor valido!\n");
+        }
+    }
+
+    
+    FILE * file = fopen("servicos.dat","rb");
+
+    if (file == NULL){
+        printf("Erro ao abrir arquivo.");
+    }
+
+    while(fread(&servico, sizeof(Servico), 1, file) == 1){
+        if(strcmp(servico.valor, valorPesquisa) == 0){
+            printf("==================================\n");
+            printf("\tID: %i\n",servico.id);
+            printf("\tNome: %s\n", servico.nome);
+            printf("\tValor: %s\n", servico.valor);
+            printf("==================================\n");
+            encontrado = true;
+        }
+    }
+
+    if (encontrado == false){
+        printf("Nenhum servico encontrado! \n");
+    }
+    fclose(file);
+    digiteEnter();
 }

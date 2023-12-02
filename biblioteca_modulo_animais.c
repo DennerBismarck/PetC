@@ -92,6 +92,7 @@ int menuAnimal(void){
     printf("\t2. Listar animais de um cliente\n");
     printf("\t3. Editar animal\n");
     printf("\t4. Deletar animal\n");
+    printf("\t5. Listar todos os animais\n");
     printf("\t0. Sair\n");
 
     printf("Digite sua opcao: ");
@@ -286,4 +287,30 @@ void deleteAnimal(){
     }
     fclose(file);
     digiteEnter();    
+}
+
+void listarTodosAnimais(){
+
+    Animal animal;
+
+    system("clear || cls");
+    mostradorLogo();
+    printf("#### LISTAR TODOS OS ANIMAIS ####\n");
+    
+    FILE * file = fopen("animais.dat","rb");
+
+    if (file == NULL){
+        printf("Erro ao abrir arquivo.");
+    }
+
+    while(fread(&animal, sizeof(Animal), 1, file) == 1){
+        printf("==================================\n");
+        printf("\tID do animal: %i\n", animal.id);
+        printf("\tCPF do cliente: %s\n", animal.cpfDoCliente);
+        printf("\tDescricao: %s\n", animal.descricao);
+        printf("==================================\n");
+    }
+    
+    fclose(file);
+    digiteEnter();
 }

@@ -15,3 +15,4 @@ void updateServico();
 void deleteServico();
 void checaExistenciaServico(const char* nomeVerificado);
 bool checaServicoID(const int* idServico);
+void listarServicoValor();
