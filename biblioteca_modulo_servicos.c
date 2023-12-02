@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include "biblioteca_Funcoes_auxiliares.h"
+#include "biblioteca_modulo_atendimentos.h"
 
 int ultimoID;
 
@@ -149,66 +150,104 @@ Servico* cadastrarServico(){
     }
 }
 
-void listarServicos(){
+void listarServicos() {
     Servico servico;
+
     system("clear || cls");
     mostradorLogo();
     printf("#### LISTAGEM DE SERVICOS ####\n");
 
     FILE* file = fopen("servicos.dat", "rb");
+    FILE* fileAte = fopen("atendimentos.dat", "rb");
 
-    if (file == NULL){
-        printf("Erro ao abrir arquivo.");
+    if (file == NULL || fileAte == NULL) {
+        printf("Erro ao abrir arquivos.");
+        return;
     }
 
+    
+    while (fread(&servico, sizeof(Servico), 1, file) == 1) {
+        if (servico.status == true) {
+            int contadorServico = 0;
+            fseek(fileAte, 0, SEEK_SET);
 
-    while(fread(&servico, sizeof(Servico), 1, file) == 1){
-        if(servico.status == true){
+            Atendimento atendimento;
+            while (fread(&atendimento, sizeof(Atendimento), 1, fileAte) == 1) {
+                if (atendimento.idDoservico == servico.id) {
+                    contadorServico++;
+                }
+            }
+
             printf("==================================\n");
-            printf("\tID: %i\n",servico.id);
+            printf("\tID: %i\n", servico.id);
             printf("\tNome: %s\n", servico.nome);
             printf("\tValor: %s\n", servico.valor);
+            printf("\tQuantidade de vezes agendado: %d\n", contadorServico);
             printf("==================================\n");
         }
     }
-    digiteEnter();
+
     fclose(file);
+    fclose(fileAte);
+    digiteEnter();
 }
 
-void pesquisarServico(){
+
+void pesquisarServico() {
     Servico servico;
+    Atendimento atendimento;
     bool encontrado = false;
-    char nomePesquisa[81];
+    char nomePesquisa[82];
 
     system("clear || cls");
     mostradorLogo();
     printf("#### PESQUISAR SERVICO ####\n");
 
     strncpy(nomePesquisa, input("\nDigite o nome do servico que voce deseja pesquisar: "), sizeof(nomePesquisa));
-    
-    FILE * file = fopen("servicos.dat","rb");
 
-    if (file == NULL){
-        printf("Erro ao abrir arquivo.");
+    FILE *fileServico = fopen("servicos.dat", "rb");
+    FILE *fileAtendimento = fopen("atendimentos.dat", "rb");
+
+    if (fileServico == NULL || fileAtendimento == NULL) {
+        printf("Erro ao abrir arquivos.");
+        return;
     }
 
-    while(fread(&servico, sizeof(Servico), 1, file) == 1){
-        if(strcmp(servico.nome, nomePesquisa) == 0){
+    
+    int contadorAgendado = 0;
+
+    while (fread(&servico, sizeof(Servico), 1, fileServico) == 1) {
+        
+        if (servico.status == true && strcasecmp(servico.nome, nomePesquisa) == 0) {
+            
+            contadorAgendado = 0;
+
+            
+            while (fread(&atendimento, sizeof(Atendimento), 1, fileAtendimento) == 1) {
+                if (atendimento.idDoservico == servico.id) {
+                    contadorAgendado++;
+                }
+            }
+
+            
             printf("==================================\n");
-            printf("\tID: %i\n",servico.id);
+            printf("\tID: %i\n", servico.id);
             printf("\tNome: %s\n", servico.nome);
             printf("\tValor: %s\n", servico.valor);
+            printf("\tQuantidade agendada: %d\n", contadorAgendado);
             printf("==================================\n");
+
             encontrado = true;
-            fclose(file);
             break;
         }
     }
 
-    if (encontrado == false){
+    if (!encontrado) {
         printf("Servico nao encontrado! \n");
-        fclose(file);
     }
+
+    fclose(fileServico);
+    fclose(fileAtendimento);
     digiteEnter();
 }
 
