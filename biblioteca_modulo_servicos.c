@@ -47,7 +47,8 @@ int retornaUltimoIDServico() {
     int ultimoID = 0;
 
     if (file != NULL) {
-        fseek(file, -sizeof(Servico), SEEK_END);
+        long pos = -1L;
+        fseek(file, pos*sizeof(Servico), SEEK_END);
 
         if (fread(&servico, sizeof(Servico), 1, file) == 1) {
             ultimoID = servico.id;

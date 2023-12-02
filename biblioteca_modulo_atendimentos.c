@@ -60,7 +60,9 @@ int retornaUltimoIDatendimento() {
     int ultimoIDAtendimento = 0;
 
     if (file != NULL) {
-        fseek(file, -sizeof(Atendimento), SEEK_END);
+        long pos = -1L;
+        fseek(file, pos*sizeof(Atendimento), SEEK_END);
+        
 
         if (fread(&atendimento, sizeof(Atendimento), 1, file) == 1) {
             ultimoIDAtendimento = atendimento.id;
@@ -90,6 +92,7 @@ int menuAtendimentos(void){
     scanf("%d", &opAtendimentos);
     return opAtendimentos;      
 }
+
 Atendimento* agendarProcedimento() {
     system("clear||cls");
     mostradorLogo();
@@ -143,6 +146,8 @@ Atendimento* agendarProcedimento() {
 
                                                 ate->id = retornaUltimoIDatendimento()+1;
 
+                                                ate->status = true;
+
                                                 FILE* file = fopen("atendimentos.dat", "ab");
 
                                                 if (file == NULL) {
@@ -181,118 +186,114 @@ Atendimento* agendarProcedimento() {
     digiteEnter();
 }
 
-void updateAtendimento(){
+void updateAtendimento() {
     system("clear||cls");
     mostradorLogo();
     Atendimento ate;
-    
+
     int escolhaNumero;
 
     printf("#### EDITAR ATENDIMENTO ####\n");
 
-    while (true){
-        const char* escolha = input("Digite o id do agendamento que voce deseja editar: ");
-        if(verificaNumero(*escolha)){
+    while (true) {
+        const char *escolha = input("Digite o id do agendamento que voce deseja editar: ");
+        if (verificaNumero(*escolha)) {
             escolhaNumero = atoi(escolha);
             break;
-        }else{
+        } else {
             printf("Digite um id valido!\n");
         }
     }
 
-    FILE * file = fopen("animais.dat", "rb+");
+    FILE *file = fopen("atendimentos.dat", "rb+");
 
-    if (file == NULL){
-        printf("Erro ao abrir arquivo.");
+    if (file == NULL) {
+        printf("Erro ao abrir arquivo.\n");
+        return;
     }
 
     bool agendamentoConcluido = false;
 
-    while (fread(&ate, sizeof(Animal),1, file) == 1) {
-        while (!agendamentoConcluido){    
+    while (fread(&ate, sizeof(Atendimento), 1, file) == 1) {
+        if (ate.id == escolhaNumero) {
             char *cpf = input("Digite o cpf do cliente que esta agendando: ");
             if (!verificaExistenciaCPF(cpf)) {
                 strncpy(ate.cpfDoCliente, cpf, sizeof(ate.cpfDoCliente));
                 free(cpf);
 
-                while (!agendamentoConcluido) {
-                    listarServicos();
-                    printf("Digite o id do servico que voce deseja agendar: ");
+                listarServicos();
+                printf("Digite o id do servico que voce deseja agendar: ");
 
-                    int ser;
-                    scanf("%i", &ser);
+                int ser;
+                scanf("%i", &ser);
+                fflush(stdin);
+
+                if (checaServicoID(&ser)) {
+                    ate.idDoservico = ser;
+
+                    readAnimal();
+                    int ani;
+                    printf("Digite o id do animal que sera atendido: ");
+                    scanf("%i", &ani);
                     fflush(stdin);
 
-                    if (checaServicoID(&ser)) {
-                        ate.idDoservico = ser;
+                    if (checaAnimalID(&ani)) {
+                        ate.idDoanimal = ani;
 
-                        while (!agendamentoConcluido) {
-                            readAnimal();
-                            int ani;
-                            printf("Digite o id do animal que sera atendido: ");
-                            scanf("%i", &ani);
-                            fflush(stdin);
+                        char *data = input("Digite a data do atendimento (DD/MM/AAAA): ");
+                        if (validaData(data)) {
 
-                            if (checaAnimalID(&ani)) {
-                                ate.idDoanimal = ani;
+                            char *hora = input("Digite a hora do atendimento (HH:MM): ");
+                            if (validaHora(hora)) {
+                                if (verificaExistenciaAtendimento(data, hora)) {
+                                    strncpy(ate.data, data, sizeof(ate.data));
+                                    free(data);
 
-                                while (!agendamentoConcluido) {
-                                    char *data = input("Digite a data do atendimento (DD/MM/AAAA): ");
-                                    if (validaData(data)) {
+                                    strncpy(ate.hora, hora, sizeof(ate.hora));
+                                    free(hora);
 
-                                        while (!agendamentoConcluido) {
-                                            char *hora = input("Digite a hora do atendimento (HH:MM): ");
-                                            if (validaHora(hora)) {
-                                                if (verificaExistenciaAtendimento(data, hora)) {
-                                                    strncpy(ate.data, data, sizeof(ate.data));
-                                                    free(data);
+                                    long pos = -1L;
+                                    fseek(file, pos * sizeof(Atendimento), SEEK_CUR);
+                                    fwrite(&ate, sizeof(Atendimento), 1, file);
 
-                                                    strncpy(ate.hora, hora, sizeof(ate.hora));
-                                                    free(hora);
-
-                                                    long pos = -1L;
-                                                    fseek(file, pos*sizeof(Atendimento), SEEK_CUR);
-                                                    fwrite(&ate, sizeof(Atendimento), 1, file);
-
-                                                    agendamentoConcluido = true; 
-                                                } else {
-                                                    printf("Conflito na agenda!\n");
-                                                }
-                                            } else {
-                                                printf("Hora invalida!\n");
-                                            }
-                                        }
-                                    } else {
-                                        printf("Data invalida!\n");
-                                    }
+                                    agendamentoConcluido = true;
+                                    break;
+                                } else {
+                                    printf("Conflito na agenda!\n");
                                 }
                             } else {
-                                printf("ID do animal invalido!\n");
+                                printf("Hora invalida!\n");
                             }
+                        } else {
+                            printf("Data invalida!\n");
                         }
                     } else {
-                        printf("ID do servico invalido!\n");
+                        printf("ID do animal invalido!\n");
                     }
+                } else {
+                    printf("ID do servico invalido!\n");
                 }
             } else {
                 printf("CPF nao cadastrado!\n");
             }
-        }     
+        }
     }
+
     fclose(file);
     digiteEnter();
 }
+
 
 void selecionaAtendimento(){
     int opSelecionaAtendimento;
 
     do{
         printf("Digite 1 para editar um dos atendimentos, 2 para deletar ou 0 para continuar: ");
-        scanf("%i", &opSelecionaAtendimento); fflush(stdin);
+        scanf("%i", &opSelecionaAtendimento);
+        fflush(stdin);
         switch (opSelecionaAtendimento){
             case 1:
                 updateAtendimento();
-                fflush(stdin);
                 break;
             case 2:
                 printf("Ai tonha\n");
@@ -307,7 +308,7 @@ void selecionaAtendimento(){
     }while (opSelecionaAtendimento != 0);
 }
 
-void listarTodosAtendimentos(){
+void listarTodosAtendimentos() {
     system("clear||cls");
     mostradorLogo();
 
@@ -315,45 +316,47 @@ void listarTodosAtendimentos(){
     Servico servico;
     Animal animal;
 
-
     printf("#### LISTAGEM DE TODOS OS AGENDAMENTOS ####\n");
 
-    FILE * fileAte = fopen("atendimentos.dat","rb");
-    FILE * fileAni = fopen("animais.dat","rb");
-    FILE * fileSer = fopen("servicos.dat", "rb");
+    FILE* fileAte = fopen("atendimentos.dat", "rb");
+    FILE* fileAni = fopen("animais.dat", "rb");
+    FILE* fileSer = fopen("servicos.dat", "rb");
 
-    if (fileAte == NULL || fileSer == NULL || fileAte == NULL){
-        printf("Erro ao ler arquivos.");
+    if (fileAte == NULL || fileSer == NULL || fileAni == NULL) {
+        printf("Erro ao ler arquivos.\n");
+        return;
     }
 
-    while(fread(&atendimento, sizeof(Atendimento), 1, fileAte) == 1){
-        if(atendimento.status == true){
+    while (fread(&atendimento, sizeof(Atendimento), 1, fileAte) == 1) {
+        if (atendimento.status == true) {
             printf("==================================\n");
             printf("\tID do atendimento: %i\n", atendimento.id);
             printf("\tCPF do cliente: %s\n", atendimento.cpfDoCliente);
             printf("\tData: %s\n", atendimento.data);
-            printf("\tHora: %s\n", atendimento.hora);
-            while(fread(&animal, sizeof(Animal), 1, fileAni) == 1){
-                if(animal.id == atendimento.idDoanimal){
-                    printf("\tId do animal atendido: %d\n", atendimento.idDoanimal);
-                    printf("\tDescricao do animal atendido: %s\n", animal.descricao);
-                }
-            }
-            while(fread(&servico, sizeof(Servico), 1, fileSer) == 1){
-                if(servico.id == atendimento.idDoservico){
-                    printf("\tServico prestado: %s \n", servico.nome);
-                    printf("\tValor: %s \n", servico.valor);
-                }
-            }
+            printf("\tHora: %.5s\n", atendimento.hora);
+
+            
+            fseek(fileAni, (atendimento.idDoanimal - 1) * sizeof(Animal), SEEK_SET);
+            fread(&animal, sizeof(Animal), 1, fileAni);
+
+            printf("\tId do animal atendido: %d\n", atendimento.idDoanimal);
+            printf("\tDescricao do animal atendido: %s\n", &animal.descricao);
+
+            
+            fseek(fileSer, (atendimento.idDoservico - 1) * sizeof(Servico), SEEK_SET);
+            fread(&servico, sizeof(Servico), 1, fileSer);
+
+            printf("\tServico prestado: %s \n", servico.nome);
+            printf("\tValor: %s \n", servico.valor);
+
             printf("==================================\n");
         }
-        selecionaAtendimento();
     }
+    selecionaAtendimento();
 
     fclose(fileAte);
     fclose(fileAni);
     fclose(fileSer);
 
     digiteEnter();
-
 }

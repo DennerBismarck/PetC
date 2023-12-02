@@ -67,7 +67,8 @@ int retornaUltimoIDAnimal() {
     int contadorIDAnimal = 0;
 
     if (file != NULL) {
-        fseek(file, -sizeof(Animal), SEEK_END);
+        long pos = -1L;
+        fseek(file, pos*sizeof(Animal), SEEK_END);
 
         if (fread(&animal, sizeof(Animal), 1, file) == 1) {
             contadorIDAnimal = animal.id;
