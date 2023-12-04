@@ -160,8 +160,8 @@ void listarServicos() {
     FILE* file = fopen("servicos.dat", "rb");
     FILE* fileAte = fopen("atendimentos.dat", "rb");
 
-    if (file == NULL || fileAte == NULL) {
-        printf("Erro ao abrir arquivos.");
+    if (file == NULL) {
+        printf("Erro ao abrir arquivo.");
         return;
     }
 
@@ -234,7 +234,7 @@ void pesquisarServico() {
             printf("\tID: %i\n", servico.id);
             printf("\tNome: %s\n", servico.nome);
             printf("\tValor: %s\n", servico.valor);
-            printf("\tQuantidade agendada: %d\n", contadorAgendado);
+            printf("\tQuantidade de vezes agendado: %d\n", contadorAgendado);
             printf("==================================\n");
 
             encontrado = true;

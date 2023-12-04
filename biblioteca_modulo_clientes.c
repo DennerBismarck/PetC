@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include "biblioteca_Funcoes_auxiliares.h"
+#include "biblioteca_modulo_animais.h"
 
 /*Todas as funções de CRUD foram diretamente feitas com base nos Slides passados em aula*/
 
@@ -127,6 +128,7 @@ void listarCliente(void){
     printf("#### LISTAGEM DE CLIENTES ####\n");
 
     FILE* file = fopen("clientes.dat", "rb");
+    FILE* fileAni = fopen("animais.dat", "rb");
 
     if (file == NULL){
         printf("Erro ao abrir arquivo.");
@@ -135,22 +137,38 @@ void listarCliente(void){
 
     while(fread(&cliente, sizeof(Cliente), 1, file) == 1){
         if(cliente.status == true){
+            
+            int contadorAnimais = 0;
+            fseek(fileAni, 0, SEEK_SET);
+
+            Animal animal;
+
+            while (fread(&animal, sizeof(Animal), 1, fileAni) == 1){
+                if(strcmp(animal.cpfDoCliente, cliente.cpf) == 0){
+                    contadorAnimais = contadorAnimais+1;
+                }
+            }
+            
             printf("==================================\n");
             printf("\tCPF: %s\n", cliente.cpf);
             printf("\tNome: %s\n", cliente.nome);
             printf("\tEmail: %s\n", cliente.email);
             printf("\tTelefone: %s\n", cliente.telefone);
+            printf("\tQuantidade de animais cadastrados: %d\n", contadorAnimais);
             printf("==================================\n");
         }
     }
     digiteEnter();
     fclose(file);
+    fclose(fileAni);
 }
 
 void pesquisarCliente(void){
     Cliente cliente;
     bool encontrado = false;
     char cpfPesquisa[12];
+
+    FILE* fileAni = fopen("animais.dat", "rb");
 
     system("clear || cls");
     mostradorLogo();
@@ -173,14 +191,28 @@ void pesquisarCliente(void){
 
     while(fread(&cliente, sizeof(Cliente), 1, file) == 1){
         if(strcmp(cliente.cpf, cpfPesquisa) == 0){
+            
+            int contadorAnimais = 0;
+            fseek(fileAni, 0, SEEK_SET);
+
+            Animal animal;
+
+            while (fread(&animal, sizeof(Animal), 1, fileAni) == 1){
+                if(strcmp(animal.cpfDoCliente, cliente.cpf) == 0){
+                    contadorAnimais++;
+                }
+            }            
+
             printf("==================================\n");
             printf("\tCPF: %s\n", cliente.cpf);
             printf("\tNome: %s\n", cliente.nome);
             printf("\tEmail: %s\n", cliente.email);
             printf("\tTelefone: %s\n", cliente.telefone);
+            printf("\tQuantidade de animais cadastrados: %d\n", contadorAnimais);
             printf("==================================\n");
             encontrado = true;
             fclose(file);
+            fclose(fileAni);
             break;
         }
     }
@@ -188,6 +220,7 @@ void pesquisarCliente(void){
     if (encontrado == false){
         printf("Cliente nao encontrado! \n");
         fclose(file);
+        fclose(fileAni);
     }
     digiteEnter();
 }
