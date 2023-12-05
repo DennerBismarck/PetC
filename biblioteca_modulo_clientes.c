@@ -117,6 +117,7 @@ int verCliente(void){
     printf("\t3. Editar cliente\n"); 
     printf("\t4. Deletar cliente\n");
     printf("\t5. Listar clientes por ordem alfabetica\n");
+    printf("\t6. Listar clientes por nome\n");
     printf("\t0. Voltar\n"); 
 
     printf("Digite sua opcao: ");
@@ -440,5 +441,89 @@ void ListagemDinamicaAlfabetica(){
         free(cliente); 
         cliente = lista; 
     }
+    digiteEnter();
+}
+
+
+void pesquisaClientePorNome() {
+    system("clear || cls");
+    mostradorLogo();
+    printf("#### PESQUISAR CLIENTE POR NOME ####\n");
+
+    char *nomePesquisa = input("Digite o nome que deseja pesquisar: ");
+
+    FILE *file = fopen("clientes.dat", "rb");
+
+    if (file == NULL) {
+        printf("Erro ao abrir arquivo.\n");
+        return;
+    }
+
+    Cliente *cliente;
+    Cliente *lista;
+
+    lista = NULL;
+    cliente = (Cliente *)malloc(sizeof(Cliente));
+
+    if (cliente == NULL) {
+        printf("Erro de alocacao de memoria\n");
+        return;
+    }
+
+    while (fread(cliente, sizeof(Cliente), 1, file) == 1) {
+        cliente->prox = NULL;
+
+        if ((lista == NULL) || (strcmp(cliente->nome, lista->nome) < 0)) {
+            cliente->prox = lista;
+            lista = cliente;
+        } else {
+            Cliente *anterior = lista;
+            Cliente *atual = lista->prox;
+            while ((atual != NULL) && strcmp(atual->nome, cliente->nome) < 0) {
+                anterior = atual;
+                atual = atual->prox;
+            }
+            anterior->prox = cliente;
+            cliente->prox = atual;
+        }
+
+        cliente = (Cliente *)malloc(sizeof(Cliente));
+        if (cliente == NULL) {
+            printf("Erro de alocacao de memoria\n");
+            break;
+        }
+    }
+
+    fclose(file);
+
+    // Pesquisar cliente por nome
+    cliente = lista;
+    bool encontrado = false;
+
+    while (cliente != NULL) {
+        if (strcmp(cliente->nome, nomePesquisa) == 0) {
+            printf("==================================\n");
+            printf("\tCPF: %s\n", cliente->cpf);
+            printf("\tNome: %s\n", cliente->nome);
+            printf("\tEmail: %s\n", cliente->email);
+            printf("\tTelefone: %s\n", cliente->telefone);
+            printf("==================================\n");
+            encontrado = true;
+        }
+        cliente = cliente->prox;
+    }
+
+    if (!encontrado) {
+        printf("Cliente nao encontrado.\n");
+    }
+
+    // Libera a memória alocada para a lista
+    cliente = lista;
+    while (lista != NULL) {
+        lista = lista->prox;
+        free(cliente);
+        cliente = lista;
+    }
+
     digiteEnter();
 }

@@ -21,3 +21,4 @@ void deleteCliente();
 bool verificaExistenciaCPF(const char* CPFVerificado);
 char *getCli(const char *cpf);
 void ListagemDinamicaAlfabetica();
+void pesquisaClientePorNome();

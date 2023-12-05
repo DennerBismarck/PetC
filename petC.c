@@ -103,6 +103,10 @@ int main(){
                                 fflush(stdin);
                                 ListagemDinamicaAlfabetica();
                                 break;
+                            case 6:
+                                fflush(stdin);
+                                pesquisaClientePorNome();
+                                break;
                             case 0:
                                 printf("==============================\n");
                                 break;
@@ -193,8 +197,7 @@ int main(){
                         default:
                             printf("Digite novamente!\n");
                             break;
-                        }
-                        digiteEnter();                        
+                        }                      
                 }while(opmenuAnimais != 0);
                 break;
             case 6:
