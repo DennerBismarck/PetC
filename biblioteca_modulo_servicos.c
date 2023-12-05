@@ -168,12 +168,14 @@ void listarServicos() {
     
     while (fread(&servico, sizeof(Servico), 1, file) == 1) {
         if (servico.status == true) {
+
             int contadorServico = 0;
             fseek(fileAte, 0, SEEK_SET);
 
             Atendimento atendimento;
+            
             while (fread(&atendimento, sizeof(Atendimento), 1, fileAte) == 1) {
-                if (atendimento.idDoservico == servico.id) {
+                if (atendimento.idDoservico == servico.id && atendimento.status == true) {
                     contadorServico++;
                 }
             }

@@ -23,24 +23,53 @@ struct atendimento{
     bool status;
 };
 
-/*Verifica conflito de horários com um limiar de 30 minutos entre cada atendimento*/
-bool verificaExistenciaAtendimento(char dataAgenda[9], char horaAgenda[5]){
+//Get data - feita com inspiração na getNome de Gabriel Canuto
+bool getData (const char *data){
     Atendimento atendimento;
-    bool encontrado = false;
 
-    FILE *file = fopen("atendimentos.dat", "rb");
+    FILE *file = fopen("atendimentos.dat", "rb"); 
+
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo para leitura.\n");
+        return NULL;
+    }
+
     while (fread(&atendimento, sizeof(Atendimento), 1, file) == 1) {
-        if(atendimento.status && strcmp(atendimento.data, dataAgenda) == 0){
+        if (strcmp(atendimento.data, data) == 0) {
+            fclose(file);
+            return true;
+        }
+    }
+    fclose(file);
+    return false;
+}
 
-            int horaAtual = atoi(atendimento.hora);
-            int minutoAtual = atoi(atendimento.hora + 3);
-            int horaNova = atoi(horaAgenda);
-            int minutoNova = atoi(horaAgenda + 3);
+//POR ENQUANTO ESSA DESGRAÇA NÃO FUNCIONA
+bool verificaExistenciaAtendimento(char dataAgenda[10], char horaAgenda[6]) {
+    Atendimento atendimento;
+    FILE *file = fopen("atendimentos.dat", "rb");
 
-            int minutosAtuais = horaAtual * 60 + minutoAtual;
-            int minutosNovos = horaNova * 60 + minutoNova;
+    if (file == NULL) {
+        printf("Parabens, voce eh o primeiro agendamento! \n");
+        return true;
+    }
 
-            if (abs(minutosAtuais - minutosNovos) < 30) {
+    char horaAgendaCortada[6];  // Para armazenar os 5 primeiros dígitos
+    strncpy(horaAgendaCortada, horaAgenda, 5);
+    horaAgendaCortada[5] = '\0';  // Adiciona o caractere nulo ao final
+
+    int horaNova, minutoNova;
+    sscanf(horaAgendaCortada, "%d:%d", &horaNova, &minutoNova);
+    int minutosNovo = horaNova * 60 + minutoNova;
+
+    while (fread(&atendimento, sizeof(Atendimento), 1, file) == 1) {
+        if (atendimento.status == true && getData(dataAgenda)) {
+            int horaAtual, minutoAtual;
+            sscanf(atendimento.hora, "%d:%d", &horaAtual, &minutoAtual);
+            int minutosAtual = horaAtual * 60 + minutoAtual;
+
+            // Verifica se há sobreposição de horário
+            if (minutosNovo <= minutosAtual + 30 && minutosNovo >= minutosAtual - 30) {
                 fclose(file);
                 return false; // Conflito de horário
             }
@@ -48,9 +77,8 @@ bool verificaExistenciaAtendimento(char dataAgenda[9], char horaAgenda[5]){
     }
 
     fclose(file);
-    return true;
+    return true; // Não há conflito de horário
 }
-
 
 int retornaUltimoIDatendimento() {
     Atendimento atendimento;
@@ -95,8 +123,12 @@ int menuAtendimentos(void){
 Atendimento* agendarProcedimento() {
     system("clear||cls");
     mostradorLogo();
-    Atendimento *ate;
-    ate = (Atendimento*)malloc(sizeof(Atendimento));
+    Atendimento *ate = (Atendimento*)malloc(sizeof(Atendimento));
+
+    if (ate == NULL) {
+        printf("Erro ao alocar memória para atendimento.\n");
+        return NULL;
+    }
 
     printf("#### AGENDAR ATENDIMENTO ####\n");
 
@@ -113,8 +145,7 @@ Atendimento* agendarProcedimento() {
                 printf("Digite o id do servico que voce deseja agendar: ");
 
                 int ser;
-                scanf("%i", &ser);
-                fflush(stdin);
+                scanf("%i", &ser);fflush(stdin);
 
                 if (checaServicoID(&ser)) {
                     ate->idDoservico = ser;
@@ -123,8 +154,7 @@ Atendimento* agendarProcedimento() {
                         readAnimal();
                         int ani;
                         printf("Digite o id do animal que sera atendido: ");
-                        scanf("%i", &ani);
-                        fflush(stdin);
+                        scanf("%i", &ani);fflush(stdin);
 
                         if (checaAnimalID(&ani)) {
                             ate->idDoanimal = ani;
@@ -136,28 +166,28 @@ Atendimento* agendarProcedimento() {
                                     while (!agendamentoConcluido) {
                                         char *hora = input("Digite a hora do atendimento (HH:MM): ");
                                         if (validaHora(hora)) {
-                                            if (verificaExistenciaAtendimento(data, hora)) {
+                                            if (verificaExistenciaAtendimento(data, hora) == true) {
                                                 strncpy(ate->data, data, sizeof(ate->data));
                                                 free(data);
 
                                                 strncpy(ate->hora, hora, sizeof(ate->hora));
                                                 free(hora);
 
-                                                ate->id = retornaUltimoIDatendimento()+1;
-
+                                                ate->id = retornaUltimoIDatendimento() + 1;
                                                 ate->status = true;
 
-                                                FILE* file = fopen("atendimentos.dat", "ab");
+                                                FILE *file = fopen("atendimentos.dat", "ab");
 
                                                 if (file == NULL) {
-                                                    printf("Erro ao abrir arquivo.");
+                                                    printf("Erro ao abrir arquivo de atendimentos.\n");
+                                                } else {
+                                                    fwrite(ate, sizeof(Atendimento), 1, file);
+                                                    fclose(file);
+                                                    agendamentoConcluido = true;
                                                 }
 
-                                                fwrite(ate, sizeof(Atendimento), 1, file);
-                                                fclose(file);
+                                                
                                                 free(ate);
-
-                                                agendamentoConcluido = true; 
                                             } else {
                                                 printf("Conflito na agenda!\n");
                                             }
@@ -183,7 +213,10 @@ Atendimento* agendarProcedimento() {
     }
 
     digiteEnter();
+
+    
 }
+
 
 void updateAtendimento() {
     system("clear||cls");
@@ -377,6 +410,7 @@ void listarTodosAtendimentos() {
 
             printf("\tID do atendimento: %i\n", atendimento.id);
             printf("\tCPF do cliente: %s\n", atendimento.cpfDoCliente);
+            printf("\tNome do cliente: %s\n", getCli(atendimento.cpfDoCliente));
 
             printf("\tData: %s\n", atendimento.data);
             printf("\tHora: %.5s\n", atendimento.hora);
@@ -447,6 +481,7 @@ void listarAgendamentosCliente(){
 
             printf("\tID do atendimento: %i\n", atendimento.id);
             printf("\tCPF do cliente: %s\n", atendimento.cpfDoCliente);
+            printf("\tNome do cliente: %s\n", getCli(atendimento.cpfDoCliente));
 
             printf("\tData: %s\n", atendimento.data);
             printf("\tHora: %.5s\n", atendimento.hora);

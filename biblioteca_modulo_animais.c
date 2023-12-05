@@ -142,46 +142,55 @@ Animal* createAnimal(void){
     digiteEnter();
 }
 
-void readAnimal(void){
+void readAnimal(void) {
     Animal animal;
+    Cliente cliente;
+
     bool encontrado = false;
     char cpfPesquisa[12];
 
     system("clear || cls");
     mostradorLogo();
     printf("#### LISTAR ANIMAIS DE UM CLIENTE ####\n");
-    while(true){
+
+    while (true) {
         strncpy(cpfPesquisa, input("\nDigite o cpf do cliente que voce deseja pesquisar: "), sizeof(cpfPesquisa));
-        if (!verificaExistenciaCPF(cpfPesquisa)){
+        if (!verificaExistenciaCPF(cpfPesquisa)) {
             break;
-        } else{
+        } else {
             printf("Digite um cpf valido!\n");
             digiteEnter();
         }
     }
-    
-    FILE * file = fopen("animais.dat","rb");
 
-    if (file == NULL){
+    FILE *file = fopen("animais.dat", "rb");
+
+    if (file == NULL) {
         printf("Erro ao abrir arquivo.");
+        return;
     }
 
-    while(fread(&animal, sizeof(Animal), 1, file) == 1){
-        if(strcmp(animal.cpfDoCliente, cpfPesquisa) == 0 && animal.status == true){
+    while (fread(&animal, sizeof(Animal), 1, file) == 1) {
+        if (strncmp(animal.cpfDoCliente, cpfPesquisa, sizeof(animal.cpfDoCliente)) == 0 && animal.status == true) {
             printf("==================================\n");
             printf("\tID do animal: %i\n", animal.id);
-            printf("\tCPF do cliente: %s\n", animal.cpfDoCliente);
             printf("\tDescricao: %s\n", animal.descricao);
+            printf("\tCPF do cliente: %s\n", animal.cpfDoCliente);
+            printf("\tNome do cliente dono: %s\n", getCli(cpfPesquisa));
             printf("==================================\n");
+
             encontrado = true;
         }
     }
-    if (encontrado == false){
+
+    if (encontrado == false) {
         printf("Nenhum animal encontrado! \n");
     }
+
     fclose(file);
     digiteEnter();
 }
+
 
 void  updateAnimal(){
     readAnimal();
@@ -208,7 +217,7 @@ void  updateAnimal(){
     }
 
     while(fread(&animal, sizeof(Animal), 1, file) == 1){
-        if(animal.id == escolhaNumero){
+        if(animal.id == escolhaNumero && animal.status == true){
             printf("==================================\n");
             printf("\tID do animal: %i\n", animal.id);
             printf("\tCPF do cliente: %s\n", animal.cpfDoCliente);
@@ -304,11 +313,14 @@ void listarTodosAnimais(){
     }
 
     while(fread(&animal, sizeof(Animal), 1, file) == 1){
-        printf("==================================\n");
-        printf("\tID do animal: %i\n", animal.id);
-        printf("\tCPF do cliente: %s\n", animal.cpfDoCliente);
-        printf("\tDescricao: %s\n", animal.descricao);
-        printf("==================================\n");
+        if(animal.status == true){
+            printf("==================================\n");
+            printf("\tID do animal: %i\n", animal.id);
+            printf("\tCPF do cliente: %s\n", animal.cpfDoCliente);
+            printf("\tDescricao: %s\n", animal.descricao);
+            printf("\tNome do cliente dono: %s\n", getCli(animal.cpfDoCliente));
+            printf("==================================\n");
+        }
     }
     
     fclose(file);

@@ -3,7 +3,9 @@ typedef struct animal Animal;
 struct animal{
     int id;
     char descricao[200];
-    char cpfDoCliente[11];
+    char cpfDoCliente[12];
+
+    bool status;
 };
 
 Animal* createAnimal();

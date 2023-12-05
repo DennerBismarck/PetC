@@ -17,3 +17,4 @@ void pesquisarCliente(void);
 void updateCliente();
 void deleteCliente();
 bool verificaExistenciaCPF(const char* CPFVerificado);
+char *getCli(const char *cpf);

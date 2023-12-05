@@ -121,7 +121,7 @@ int verCliente(void){
     return opVerCliente;       
 }
 
-void listarCliente(void){
+void listarCliente(void) {
     Cliente cliente;
     system("clear || cls");
     mostradorLogo();
@@ -130,25 +130,26 @@ void listarCliente(void){
     FILE* file = fopen("clientes.dat", "rb");
     FILE* fileAni = fopen("animais.dat", "rb");
 
-    if (file == NULL){
+    if (file == NULL) {
         printf("Erro ao abrir arquivo.");
+        return;
     }
 
+    while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
+        if (cliente.status == true) {
 
-    while(fread(&cliente, sizeof(Cliente), 1, file) == 1){
-        if(cliente.status == true){
-            
             int contadorAnimais = 0;
             fseek(fileAni, 0, SEEK_SET);
 
             Animal animal;
+            
 
-            while (fread(&animal, sizeof(Animal), 1, fileAni) == 1){
-                if(strcmp(animal.cpfDoCliente, cliente.cpf) == 0){
-                    contadorAnimais = contadorAnimais+1;
+            while (fread(&animal, sizeof(Animal), 1, fileAni) == 1) {
+                if (strcmp(animal.cpfDoCliente, cliente.cpf) == 0 && animal.status == true) {
+                    contadorAnimais++;
                 }
             }
-            
+
             printf("==================================\n");
             printf("\tCPF: %s\n", cliente.cpf);
             printf("\tNome: %s\n", cliente.nome);
@@ -158,9 +159,10 @@ void listarCliente(void){
             printf("==================================\n");
         }
     }
-    digiteEnter();
+
     fclose(file);
     fclose(fileAni);
+    digiteEnter();
 }
 
 void pesquisarCliente(void){
@@ -198,7 +200,7 @@ void pesquisarCliente(void){
             Animal animal;
 
             while (fread(&animal, sizeof(Animal), 1, fileAni) == 1){
-                if(strcmp(animal.cpfDoCliente, cliente.cpf) == 0){
+                if(strcmp(animal.cpfDoCliente, cliente.cpf) == 0 && animal.status == true){
                     contadorAnimais++;
                 }
             }            
@@ -334,4 +336,37 @@ void deleteCliente(){
         }
     }
     digiteEnter();
+}
+
+
+//Função feita originalmente por Gabriel Canuto (Deus abençoe esse gordinho)
+char *getCli(const char *cpf) {
+    Cliente cliente;
+    FILE *file = fopen("clientes.dat", "rb"); // Abre o arquivo para leitura
+
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo para leitura.\n");
+        return NULL;
+    }
+
+    while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
+        if (strcmp(cliente.cpf, cpf) == 0) {
+            // CPF encontrado, aloca memória para o nome
+            char *result = (char *)malloc(strlen(cliente.nome) + 1);
+            if (result == NULL) {
+                printf("Erro ao alocar memoria.\n");
+                fclose(file);
+                return NULL;
+            }
+
+            // Copia o nome para o resultado e o retorna
+            strcpy(result, cliente.nome);
+            fclose(file);
+            return result;
+        }
+    }
+
+    // Se o CPF não for encontrado, retorna NULL
+    fclose(file);
+    return NULL;
 }
