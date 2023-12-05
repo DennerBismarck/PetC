@@ -15,7 +15,7 @@ typedef struct atendimento Atendimento;
 struct atendimento{
     int id;
     char data[11];
-    char hora[5];
+    char hora[7];
     char cpfDoCliente[12];
     int idDoanimal;
     int idDoservico;
@@ -65,6 +65,7 @@ bool verificaExistenciaAtendimento(char dataAgenda[10], char horaAgenda[6]) {
     while (fread(&atendimento, sizeof(Atendimento), 1, file) == 1) {
         if (atendimento.status == true && getData(dataAgenda)) {
             int horaAtual, minutoAtual;
+            digiteEnter();
             sscanf(atendimento.hora, "%d:%d", &horaAtual, &minutoAtual);
             int minutosAtual = horaAtual * 60 + minutoAtual;
 

@@ -44,7 +44,6 @@ char *input(const char *entrada) {
     if (tamanhoBuffer > 0 && buffer[tamanhoBuffer - 1] == '\n') {
         buffer[tamanhoBuffer - 1] = '\0';
     }
-
     return buffer;
 }
 
@@ -216,7 +215,7 @@ bool validaTelefone(char* fone){
 }
 
 /*Feito para o formato HH:MM*/
-bool validaHora(const char horario[6]) {
+bool validaHora(const char horario[7]) {
     if (strlen(horario) != 5) {
         return false;
     }
