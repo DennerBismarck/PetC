@@ -15,6 +15,8 @@ struct cliente {
     char email[42];
     char telefone[12];
     bool status;
+
+    Cliente *prox;//Parte de listagem dinâmica
 };
 
 int menuCliente(void){
@@ -114,6 +116,7 @@ int verCliente(void){
     printf("\t2. Pesquisar diretamente por cliente\n");
     printf("\t3. Editar cliente\n"); 
     printf("\t4. Deletar cliente\n");
+    printf("\t5. Listar clientes por ordem alfabetica\n");
     printf("\t0. Voltar\n"); 
 
     printf("Digite sua opcao: ");
@@ -369,4 +372,73 @@ char *getCli(const char *cpf) {
     // Se o CPF não for encontrado, retorna NULL
     fclose(file);
     return NULL;
+}
+
+//Feito com base nos slides de Flavius Gorgônio e no código de Gabriel Canuto
+void ListagemDinamicaAlfabetica(){
+    system("clear || cls");
+    mostradorLogo();
+    printf("#### LISTAR CLIENTES EM ORDEM ALFABETICA ####\n");
+
+    FILE *file = fopen("clientes.dat", "rb");
+
+    if (file == NULL) { 
+        printf("Erro ao abrir arquivo.\n");
+        return;
+    } 
+
+    Cliente* cliente; 
+    Cliente* lista;  
+
+    lista = NULL;
+    cliente = (Cliente*)malloc(sizeof(Cliente));
+
+    if (cliente == NULL) {
+        printf("Erro de alocacao de memoria\n");
+    }
+
+    while (fread(cliente, sizeof(Cliente), 1, file) == 1) {
+        cliente->prox = NULL;
+
+        if ((lista == NULL) || (strcmp(cliente->nome, lista->nome) < 0)) {
+            cliente->prox = lista; 
+            lista = cliente;  
+        } else {  
+            Cliente* anterior = lista;  
+            Cliente* atual = lista->prox;   
+            while ((atual != NULL) && strcmp(atual->nome, cliente->nome) < 0) { 
+                anterior = atual;  
+                atual = atual->prox; 
+            }
+            anterior->prox = cliente;
+            cliente->prox = atual;
+        }
+
+        cliente = (Cliente*)malloc(sizeof(Cliente));
+        if (cliente == NULL) {
+            printf("Erro de alocacao de memoria\n");
+        }
+    }
+
+    fclose(file);
+
+    cliente = lista;
+    while (cliente != NULL) { 
+            printf("==================================\n");
+            printf("\tCPF: %s\n", cliente->cpf);
+            printf("\tNome: %s\n", cliente->nome);
+            printf("\tEmail: %s\n", cliente->email);
+            printf("\tTelefone: %s\n", cliente->telefone);
+            printf("==================================\n");
+        digiteEnter();
+        cliente = cliente->prox; 
+    }
+
+    cliente = lista; 
+    while (lista != NULL) {
+        lista = lista->prox; 
+        free(cliente); 
+        cliente = lista; 
+    }
+    digiteEnter();
 }

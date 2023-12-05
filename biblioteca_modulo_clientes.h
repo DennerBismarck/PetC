@@ -7,6 +7,8 @@ struct cliente {
     char senha[100];
 
     bool status;
+
+    Cliente *prox;
 };
 
 int menuCliente(void);
@@ -18,3 +20,4 @@ void updateCliente();
 void deleteCliente();
 bool verificaExistenciaCPF(const char* CPFVerificado);
 char *getCli(const char *cpf);
+void ListagemDinamicaAlfabetica();

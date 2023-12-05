@@ -99,6 +99,10 @@ int main(){
                                 fflush(stdin);
                                 deleteCliente();
                                 break;
+                            case 5:
+                                fflush(stdin);
+                                ListagemDinamicaAlfabetica();
+                                break;
                             case 0:
                                 printf("==============================\n");
                                 break;
