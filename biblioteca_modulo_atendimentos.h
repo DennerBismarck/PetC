@@ -8,9 +8,12 @@ struct atendimento{
     int idDoservico;
 
     bool status;
+
+    Atendimento *prox;
 };
 
 int menuAtendimentos(void);
 Atendimento* agendarProcedimento();
 void listarTodosAtendimentos();
 void listarAgendamentosCliente();
+void listagemDinamicaDataHora();

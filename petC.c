@@ -54,7 +54,11 @@ int main(){
                             case 3:
                                 fflush(stdin);
                                 listarTodosAtendimentos();
-                                break; 
+                                break;
+                            case 4:
+                                fflush(stdin);
+                                listagemDinamicaDataHora(); 
+                                break;
                             case 0:
                                 fflush(stdin);
                                 printf("====================================\n");    

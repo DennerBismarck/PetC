@@ -13,7 +13,6 @@ struct animal{
     int id;
     char descricao[200];
     char cpfDoCliente[12];
-
     bool status;
 };
 

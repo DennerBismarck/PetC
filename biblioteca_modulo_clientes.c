@@ -425,14 +425,16 @@ void ListagemDinamicaAlfabetica(){
 
     cliente = lista;
     while (cliente != NULL) { 
+        if(cliente->status == true){
             printf("==================================\n");
             printf("\tCPF: %s\n", cliente->cpf);
             printf("\tNome: %s\n", cliente->nome);
             printf("\tEmail: %s\n", cliente->email);
             printf("\tTelefone: %s\n", cliente->telefone);
             printf("==================================\n");
-        digiteEnter();
-        cliente = cliente->prox; 
+            digiteEnter();
+            cliente = cliente->prox; 
+        }
     }
 
     cliente = lista; 

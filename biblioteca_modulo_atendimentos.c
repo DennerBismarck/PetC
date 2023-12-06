@@ -21,6 +21,8 @@ struct atendimento{
     int idDoservico;
 
     bool status;
+
+    Atendimento *prox;
 };
 
 //Get data - feita com inspiração na getNome de Gabriel Canuto
@@ -113,6 +115,7 @@ int menuAtendimentos(void){
     printf("\t1. Agendar novo atendimento\n");
     printf("\t2. Listar atendimentos de um cliente\n");
     printf("\t3. Listar todos os agendamentos\n");
+    printf("\t4. Listar por data e hora\n");
     printf("\t0. Sair\n");
     printf("##########################\n");
 
@@ -516,4 +519,96 @@ void listarAgendamentosCliente(){
     fclose(fileSer);
 
     digiteEnter();    
+}
+
+void listagemDinamicaDataHora() {
+    system("clear || cls");
+    mostradorLogo();
+    printf("#### LISTAR ATENDIMENTOS POR ORDEM DE DATA E HORA ####\n");
+
+    FILE *file = fopen("atendimentos.dat", "rb");
+
+    if (file == NULL) {
+        printf("Erro ao abrir arquivo.\n");
+        return;
+    }
+
+    Atendimento *atendimento;
+    Atendimento *lista;
+    Servico servico;
+    Animal animal;
+
+    lista = NULL;
+    atendimento = (Atendimento *)malloc(sizeof(Atendimento));
+
+    FILE* fileAni = fopen("animais.dat", "rb");
+    FILE* fileSer = fopen("servicos.dat", "rb");
+
+    if (atendimento == NULL) {
+        printf("Erro de alocacao de memoria\n");
+        return;
+    }
+
+    while (fread(atendimento, sizeof(Atendimento), 1, file) == 1) {
+        atendimento->prox = NULL;
+
+        if ((lista == NULL) || (strcmp(atendimento->data, lista->data) > 0) ||
+            ((strcmp(atendimento->data, lista->data) == 0) && (strcmp(atendimento->hora, lista->hora) > 0))) {
+            atendimento->prox = lista;
+            lista = atendimento;
+        } else {
+            Atendimento *anterior = lista;
+            Atendimento *atual = lista->prox;
+            while ((atual != NULL) && ((strcmp(atendimento->data, atual->data) < 0) ||
+                   ((strcmp(atendimento->data, atual->data) == 0) && (strcmp(atendimento->hora, atual->hora) < 0)))) {
+                anterior = atual;
+                atual = atual->prox;
+            }
+            anterior->prox = atendimento;
+            atendimento->prox = atual;
+        }
+
+        atendimento = (Atendimento *)malloc(sizeof(Atendimento));
+        if (atendimento == NULL) {
+            printf("Erro de alocacao de memoria\n");
+            break;
+        }
+    }
+
+    fclose(file);
+
+    atendimento = lista;
+    while (atendimento != NULL) {
+        printf("==================================\n");
+        printf("\tID: %d\n", atendimento->id);
+        printf("\tData: %s\n", atendimento->data);
+        printf("\tHora: %s\n", atendimento->hora);
+        printf("\tCPF do Cliente: %s\n", atendimento->cpfDoCliente);
+        printf("\tNome do cliente: %s\n", getCli(atendimento->cpfDoCliente));
+
+        fseek(fileAni, (atendimento->idDoanimal - 1) * sizeof(Animal), SEEK_SET);
+        fread(&animal, sizeof(Animal), 1, fileAni);
+
+        printf("\tId do animal atendido: %d\n", atendimento->idDoanimal);
+        printf("\tDescricao do animal atendido: %s\n", &animal.descricao);
+
+        
+        fseek(fileSer, (atendimento->idDoservico - 1) * sizeof(Servico), SEEK_SET);
+        fread(&servico, sizeof(Servico), 1, fileSer);
+
+        printf("\tServico prestado: %s \n", servico.nome);
+        printf("\tValor: %s \n", servico.valor);
+
+        printf("==================================\n");
+        digiteEnter();
+        atendimento = atendimento->prox;
+    }
+
+    atendimento = lista;
+    while (lista != NULL) {
+        lista = lista->prox;
+        free(atendimento);
+        atendimento = lista;
+    }
+    digiteEnter();
 }
