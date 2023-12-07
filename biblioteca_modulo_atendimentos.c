@@ -610,7 +610,6 @@ void listagemDinamicaDataHora() {
         free(atendimento);
         atendimento = lista;
     }
-    digiteEnter();
 }
 
 

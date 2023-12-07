@@ -17,6 +17,8 @@ struct servico {
     char valor[20];
 
     bool status;
+
+    Servico *prox;
 };
 
 int menuServicos(){
@@ -31,7 +33,8 @@ int menuServicos(){
     printf("\t3. Procurar por servico especifico\n");
     printf("\t4. Atualizar servico\n");
     printf("\t5. Deletar servico\n");
-    printf("\t6. Listar servicos por valor\n");
+    printf("\t6. Listar servicos com um valor\n");
+    printf("\t7. Listar servicos por ordem decescente de preco\n");
     printf("\t0. Sair\n");
     printf("##########################\n");
 
@@ -379,4 +382,72 @@ void listarServicoValor(){
     }
     fclose(file);
     digiteEnter();
+}
+
+void listagemServicoPrecos() {
+    system("clear || cls");
+    mostradorLogo();
+    printf("#### LISTAR SERVICOS POR ORDEM DE PRECO ####\n");
+
+    FILE *file = fopen("servicos.dat", "rb");
+
+    if (file == NULL) {
+        printf("Erro ao abrir arquivo.\n");
+        return;
+    }
+
+    Servico *servico;
+    Servico *lista;
+
+    lista = NULL;
+    servico = (Servico *)malloc(sizeof(Servico));
+
+    if (servico == NULL) {
+        printf("Erro de alocacao de memoria\n");
+        return;
+    }
+
+    while (fread(servico, sizeof(Servico), 1, file) == 1) {
+        servico->prox = NULL;
+
+        if ((lista == NULL) || (atof(servico->valor + 2) > atof(lista->valor + 2))) {
+            servico->prox = lista;
+            lista = servico;
+        } else {
+            Servico *anterior = lista;
+            Servico *atual = lista->prox;
+            while ((atual != NULL) && (atof(servico->valor + 2) < atof(atual->valor + 2))) {
+                anterior = atual;
+                atual = atual->prox;
+            }
+            anterior->prox = servico;
+            servico->prox = atual;
+        }
+
+        servico = (Servico *)malloc(sizeof(Servico));
+        if (servico == NULL) {
+            printf("Erro de alocacao de memoria\n");
+            break;
+        }
+    }
+
+    fclose(file);
+
+    servico = lista;
+    while (servico != NULL) {
+        printf("==================================\n");
+        printf("\tID: %d\n", servico->id);
+        printf("\tNome: %s\n", servico->nome);
+        printf("\tValor: %s\n", servico->valor);
+        printf("==================================\n");
+        digiteEnter();
+        servico = servico->prox;
+    }
+
+    servico = lista;
+    while (lista != NULL) {
+        lista = lista->prox;
+        free(servico);
+        servico = lista;
+    }
 }

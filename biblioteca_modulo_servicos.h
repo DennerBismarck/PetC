@@ -6,6 +6,8 @@ struct servico {
     char valor[20];
 
     bool status;
+
+    Servico *prox;
 };
 int menuServicos(void);
 Servico* cadastrarServico();
@@ -16,3 +18,4 @@ void deleteServico();
 void checaExistenciaServico(const char* nomeVerificado);
 bool checaServicoID(const int* idServico);
 void listarServicoValor();
+void listagemServicoPrecos();

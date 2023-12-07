@@ -164,6 +164,10 @@ int main(){
                             fflush(stdin);
                             listarServicoValor();
                             break;
+                        case 7:
+                            fflush(stdin);
+                            listagemServicoPrecos();
+                            break;
                         case 0:
                             fflush(stdin);
                             printf("======================================\n");
