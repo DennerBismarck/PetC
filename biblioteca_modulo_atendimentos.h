@@ -17,3 +17,4 @@ Atendimento* agendarProcedimento();
 void listarTodosAtendimentos();
 void listarAgendamentosCliente();
 void listagemDinamicaDataHora();
+void listagemDinamicaFiltradaPorData();

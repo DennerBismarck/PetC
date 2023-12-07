@@ -59,6 +59,10 @@ int main(){
                                 fflush(stdin);
                                 listagemDinamicaDataHora(); 
                                 break;
+                            case 5:
+                                fflush(stdin);
+                                listagemDinamicaFiltradaPorData();
+                                break;
                             case 0:
                                 fflush(stdin);
                                 printf("====================================\n");    
