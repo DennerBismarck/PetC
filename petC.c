@@ -44,31 +44,31 @@ int main(){
                         opmenuAtendimentos = menuAtendimentos();
                         switch(opmenuAtendimentos){
                             case 1:
-                                fflush(stdin);
+                                limpaBuffer();
                                 agendarProcedimento();
                                 break;
                             case 2:
-                                fflush(stdin);
+                                limpaBuffer();
                                 listarAgendamentosCliente();
                                 break;
                             case 3:
-                                fflush(stdin);
+                                limpaBuffer();
                                 listarTodosAtendimentos();
                                 break;
                             case 4:
-                                fflush(stdin);
+                                limpaBuffer();
                                 listagemDinamicaDataHora(); 
                                 break;
                             case 5:
-                                fflush(stdin);
+                                limpaBuffer();
                                 listagemDinamicaFiltradaPorData();
                                 break;
                             case 0:
-                                fflush(stdin);
+                                limpaBuffer();
                                 printf("====================================\n");    
                                 break;                           
                             default:
-                                fflush(stdin);
+                                limpaBuffer();
                                 printf("Digite novamente!");
                                 break;                                         
                         }
@@ -84,7 +84,7 @@ int main(){
                     opmenuClientes = menuCliente();
                     switch (opmenuClientes){
                     case 1:
-                        fflush(stdin);
+                        limpaBuffer();
                         cadastrarCliente(); 
                         break;
                     case 2:
@@ -92,45 +92,45 @@ int main(){
                             opmenuVerCliente = verCliente();
                             switch (opmenuVerCliente){
                             case 1:
-                                fflush(stdin);
+                                limpaBuffer();
                                 listarCliente();
                                 break;
                             case 2:
-                                fflush(stdin);
+                                limpaBuffer();
                                 pesquisarCliente();
                                 break;
                             case 3:
-                                fflush(stdin);
+                                limpaBuffer();
                                 updateCliente();
                                 break;
                             case 4:
-                                fflush(stdin);
+                                limpaBuffer();
                                 deleteCliente();
                                 break;
                             case 5:
-                                fflush(stdin);
+                                limpaBuffer();
                                 ListagemDinamicaAlfabetica();
                                 break;
                             case 6:
-                                fflush(stdin);
+                                limpaBuffer();
                                 pesquisaClientePorNome();
                                 break;
                             case 0:
                                 printf("==============================\n");
                                 break;
                             default:
-                                fflush(stdin);
+                                limpaBuffer();
                                 printf("Digite novamente!\n");
                                 break;
                             }
                         }while(opmenuVerCliente!=0);
                         break;
                     case 0:
-                        fflush(stdin);
+                        limpaBuffer();
                         printf("================================\n");
                         break;  
                     default:
-                        fflush(stdin);
+                        limpaBuffer();
                         printf("Digite novamente!\n");
                         break;
                     }
@@ -141,39 +141,39 @@ int main(){
                     opmenuServicos = menuServicos();
                     switch (opmenuServicos){
                         case 1:
-                            fflush(stdin);
+                            limpaBuffer();
                             cadastrarServico();
                             break;  
                         case 2:
-                            fflush(stdin);
+                            limpaBuffer();
                             listarServicos();
                             break;
                         case 3:
-                            fflush(stdin);
+                            limpaBuffer();
                             pesquisarServico();
                             break;
                         case 4:
-                            fflush(stdin);
+                            limpaBuffer();
                             updateServico();
                             break;
                         case 5:
-                            fflush(stdin);
+                            limpaBuffer();
                             deleteServico();
                             break;
                         case 6:
-                            fflush(stdin);
+                            limpaBuffer();
                             listarServicoValor();
                             break;
                         case 7:
-                            fflush(stdin);
+                            limpaBuffer();
                             listagemServicoPrecos();
                             break;
                         case 0:
-                            fflush(stdin);
+                            limpaBuffer();
                             printf("======================================\n");
                             break;
                         default:
-                            fflush(stdin);
+                            limpaBuffer();
                             printf("Digite novamente!\n");
                             break;
                     }
@@ -184,26 +184,26 @@ int main(){
                     opmenuAnimais = menuAnimal();
                     switch (opmenuAnimais){
                         case 1:
-                            fflush(stdin);
+                            limpaBuffer();
                             createAnimal();
                             break;
                         case 2:
-                            fflush(stdin);
+                            limpaBuffer();
                             readAnimal();
                             break;
                         case 3:
-                            fflush(stdin);
+                            limpaBuffer();
                             updateAnimal();
                             break;
                         case 4:
-                            fflush(stdin);
+                            limpaBuffer();
                             deleteAnimal();
                             break;
                         case 5:
-                            fflush(stdin);
+                            limpaBuffer();
                             listarTodosAnimais();
                         case 0:
-                            fflush(stdin);
+                            limpaBuffer();
                             printf("======================================\n");
                             break;                            
                         default:
@@ -213,11 +213,11 @@ int main(){
                 }while(opmenuAnimais != 0);
                 break;
             case 6:
-            fflush(stdin);
+            limpaBuffer();
                 printf("================================\n");
                 break;
             default:
-                fflush(stdin);
+                limpaBuffer();
                 printf("Digite novamente!\n");
                 printf("====================================\n"); 
                 break;

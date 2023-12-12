@@ -1,11 +1,10 @@
 typedef struct cliente Cliente;
 struct cliente {
-    char 
-    nome[81];
+    char nome[81];
     char cpf[11];
     char email[41];
-    char senha[100];
-
+    char telefone[12];
+    
     bool status;
 
     Cliente *prox;

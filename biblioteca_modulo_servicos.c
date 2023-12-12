@@ -72,6 +72,10 @@ bool checaServicoID(const int* idServico) {
 
     FILE * file = fopen("servicos.dat", "rb");
 
+    if (file == NULL){
+        return false;
+    }
+
     while (fread(&servico, sizeof(Servico), 1, file) == 1) {
         if (servico.id == *idServico && servico.status == true) {
             encontrado = true;
@@ -84,11 +88,32 @@ bool checaServicoID(const int* idServico) {
     return encontrado;  
 }
 
+void cabecalhoServico(){
+    printf("====================================\n");
+    printf("| ID | Nome | Preço | Qtd Agendamentos |\n");
+    printf("====================================\n");
+}
+
+void printaServico(Servico *servico, int qtd){
+    if(qtd>-1){
+        printf("| %d | %s | %s | %d |\n", servico->id, servico->nome, servico->valor, qtd);
+    }else{
+        printf("| %d | %s | %s | ( ͡° ͜ʖ ͡°) |\n", servico->id, servico->nome, servico->valor);
+    }
+
+    printf("====================================\n");
+}
+
 bool checaExistenciaServico(const char* nomeVerificado){
     Servico servico;
     bool encontrado = false;
 
     FILE * file = fopen("servicos.dat","rb");
+
+    if (file == NULL){
+        printf("Primeiro servico cadastrado! \n");
+        return true;
+    }
 
     while(fread(&servico, sizeof(Servico), 1, file) == 1){
         if(strcmp(servico.nome, nomeVerificado) == 0 && servico.status == true){
@@ -168,32 +193,31 @@ void listarServicos() {
         return;
     }
 
-    
+    cabecalhoServico();
     while (fread(&servico, sizeof(Servico), 1, file) == 1) {
         if (servico.status == true) {
 
             int contadorServico = 0;
-            fseek(fileAte, 0, SEEK_SET);
 
-            Atendimento atendimento;
-            
-            while (fread(&atendimento, sizeof(Atendimento), 1, fileAte) == 1) {
-                if (atendimento.idDoservico == servico.id && atendimento.status == true) {
-                    contadorServico++;
+            if (fileAte != NULL){
+                fseek(fileAte, 0, SEEK_SET);
+                Atendimento atendimento;
+                while (fread(&atendimento, sizeof(Atendimento), 1, fileAte) == 1) {
+                    if (atendimento.idDoservico == servico.id && atendimento.status == true) {
+                        contadorServico++;
+                    }
                 }
             }
 
-            printf("==================================\n");
-            printf("\tID: %i\n", servico.id);
-            printf("\tNome: %s\n", servico.nome);
-            printf("\tValor: %s\n", servico.valor);
-            printf("\tQuantidade de vezes agendado: %d\n", contadorServico);
-            printf("==================================\n");
+        printaServico(&servico, contadorServico);
+            
         }
     }
 
     fclose(file);
-    fclose(fileAte);
+    if(fileAte != NULL){
+        fclose(fileAte);
+    }
     digiteEnter();
 }
 
@@ -292,17 +316,17 @@ void updateServico(){
                 }else{
                     strncpy(servico.valor, valor, sizeof(servico.valor));
                     free(valor);
-                    //GAMBIARRA PRA ESSA DESGRAÇA RODAR
+                    
                     long pos = -1L;
 
                     fseek(file, pos*sizeof(Servico), SEEK_CUR);
                     fwrite(&servico, sizeof(Servico), 1, file);
-                    fclose(file);
                     break;
                 }
             }     
         }
     }
+    fclose(file);
 }
 
 void deleteServico(){
@@ -334,10 +358,10 @@ void deleteServico(){
 
             fseek(file, pos*sizeof(Servico), SEEK_CUR);
             fwrite(&servico, sizeof(Servico), 1, file);
-            fclose(file);
             break;
         }
     }
+    fclose(file);
     digiteEnter();    
 }
 
@@ -366,13 +390,10 @@ void listarServicoValor(){
         printf("Erro ao abrir arquivo.");
     }
 
+    cabecalhoServico();
     while(fread(&servico, sizeof(Servico), 1, file) == 1){
         if(strcmp(servico.valor, valorPesquisa) == 0){
-            printf("==================================\n");
-            printf("\tID: %i\n",servico.id);
-            printf("\tNome: %s\n", servico.nome);
-            printf("\tValor: %s\n", servico.valor);
-            printf("==================================\n");
+            printaServico(&servico, -1);
             encontrado = true;
         }
     }
@@ -406,7 +427,7 @@ void listagemServicoPrecos() {
         printf("Erro de alocacao de memoria\n");
         return;
     }
-
+    
     while (fread(servico, sizeof(Servico), 1, file) == 1) {
         servico->prox = NULL;
 
@@ -434,12 +455,10 @@ void listagemServicoPrecos() {
     fclose(file);
 
     servico = lista;
+
+    cabecalhoServico();
     while (servico != NULL) {
-        printf("==================================\n");
-        printf("\tID: %d\n", servico->id);
-        printf("\tNome: %s\n", servico->nome);
-        printf("\tValor: %s\n", servico->valor);
-        printf("==================================\n");
+        printaServico(servico, -1);
         digiteEnter();
         servico = servico->prox;
     }

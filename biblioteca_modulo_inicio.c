@@ -23,7 +23,7 @@ int menuPrincipal(void){
     printf("##########################\n");
 
     printf("Digite sua opcao: ");
-    scanf("%i", &opMenuPrincipal); fflush(stdin);
+    scanf("%i", &opMenuPrincipal); limpaBuffer();
     return opMenuPrincipal;   
 
 }

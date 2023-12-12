@@ -39,6 +39,10 @@ bool verificaExistenciaCPF(const char* CPFVerificado){
     bool encontrado = false;
 
     FILE * file = fopen("clientes.dat","rb");
+    if(file == NULL){
+        printf("Primeiro cliente cadastrado!\n");
+        return true;
+    }
 
     while(fread(&cliente, sizeof(Cliente), 1, file) == 1){
         if(strcmp(cliente.cpf, CPFVerificado) == 0 && cliente.status == true){
@@ -52,7 +56,20 @@ bool verificaExistenciaCPF(const char* CPFVerificado){
         return true;
     }
 }
+void cabecalhoCliente(){
+    printf("====================================\n");
+    printf("| CPF | Nome | Email | Telefone | Qtd de Animais\n");
+    printf("====================================\n");
+}
 
+void printaCliente(Cliente *cliente, int qtd){
+    if (qtd>-1){
+        printf("| %s | %s | %s | %s | %d |\n", cliente->cpf, cliente->nome, cliente->email, cliente->telefone, qtd);
+    }else{
+        printf("| %s | %s | %s | %s | :)Felicidade |\n", cliente->cpf, cliente->nome, cliente->email, cliente->telefone);
+    }
+    printf("====================================\n");
+}
 
 Cliente* cadastrarCliente(void){
     Cliente *cli;
@@ -64,6 +81,7 @@ Cliente* cadastrarCliente(void){
         mostradorLogo();
         printf("#### CADASTRO ####\n");
         char *cpf = input("Digite o CPF do cliente: ");
+        printf("CPF retornado: |%s|\n", cpf);
         if (validaCPF(cpf) && verificaExistenciaCPF(cpf)){
             strncpy(cli->cpf, cpf, sizeof(cli->cpf));
             free(cpf);
@@ -139,33 +157,34 @@ void listarCliente(void) {
         return;
     }
 
+    cabecalhoCliente();
     while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
+        
         if (cliente.status == true) {
 
             int contadorAnimais = 0;
-            fseek(fileAni, 0, SEEK_SET);
+            if(fileAni != NULL){
+                fseek(fileAni, 0, SEEK_SET);
+            }
 
             Animal animal;
             
-
-            while (fread(&animal, sizeof(Animal), 1, fileAni) == 1) {
-                if (strcmp(animal.cpfDoCliente, cliente.cpf) == 0 && animal.status == true) {
-                    contadorAnimais++;
+            if(fileAni != NULL){
+                while (fread(&animal, sizeof(Animal), 1, fileAni) == 1) {
+                    if (strcmp(animal.cpfDoCliente, cliente.cpf) == 0 && animal.status == true) {
+                        contadorAnimais++;
+                    }
                 }
             }
 
-            printf("==================================\n");
-            printf("\tCPF: %s\n", cliente.cpf);
-            printf("\tNome: %s\n", cliente.nome);
-            printf("\tEmail: %s\n", cliente.email);
-            printf("\tTelefone: %s\n", cliente.telefone);
-            printf("\tQuantidade de animais cadastrados: %d\n", contadorAnimais);
-            printf("==================================\n");
+            printaCliente(&cliente, contadorAnimais);
         }
     }
 
     fclose(file);
-    fclose(fileAni);
+    if(fileAni != NULL){
+        fclose(fileAni);
+    }
     digiteEnter();
 }
 
@@ -283,16 +302,16 @@ void updateCliente(){
                     strncpy(cliente.email, email, sizeof(cliente.email));
                     free(email);
 
-                   //GAMBIARRA PRA ESSA DESGRAÇA RODAR
+            
                     long pos = -1L;
 
                     fseek(file, pos*sizeof(Cliente), SEEK_CUR);
                     fwrite(&cliente, sizeof(Cliente), 1, file);
-                    fclose(file);
                 }    
             }
         }
     }
+    fclose(file);
 }
 
 /*Exclusão do tipo lógica*/
@@ -328,17 +347,16 @@ void deleteCliente(){
             printf("\tEmail: %s\n", cliente.email);
             printf("\tTelefone: %s\n", cliente.telefone);
             printf("==================================\n");
-            fflush(stdin);
-
+            limpaBuffer();
+            
             cliente.status = false;
             long pos = -1L;
             fseek(file, pos*sizeof(Cliente), SEEK_CUR);
             fwrite(&cliente, sizeof(Cliente), 1, file);
-            fclose(file);
 
-        
         }
     }
+    fclose(file);
     digiteEnter();
 }
 
@@ -424,14 +442,11 @@ void ListagemDinamicaAlfabetica(){
     fclose(file);
 
     cliente = lista;
+
+    cabecalhoCliente();
     while (cliente != NULL) { 
         if(cliente->status == true){
-            printf("==================================\n");
-            printf("\tCPF: %s\n", cliente->cpf);
-            printf("\tNome: %s\n", cliente->nome);
-            printf("\tEmail: %s\n", cliente->email);
-            printf("\tTelefone: %s\n", cliente->telefone);
-            printf("==================================\n");
+            printaCliente(cliente, -1);
             digiteEnter();
             cliente = cliente->prox; 
         }
@@ -502,14 +517,10 @@ void pesquisaClientePorNome() {
     cliente = lista;
     bool encontrado = false;
 
+    cabecalhoCliente();
     while (cliente != NULL) {
         if (strcmp(cliente->nome, nomePesquisa) == 0) {
-            printf("==================================\n");
-            printf("\tCPF: %s\n", cliente->cpf);
-            printf("\tNome: %s\n", cliente->nome);
-            printf("\tEmail: %s\n", cliente->email);
-            printf("\tTelefone: %s\n", cliente->telefone);
-            printf("==================================\n");
+            printaCliente(cliente, -1);
             encontrado = true;
         }
         cliente = cliente->prox;

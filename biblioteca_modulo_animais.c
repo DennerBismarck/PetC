@@ -20,18 +20,22 @@ bool checaAnimalID(const int* idAnimal){
     Animal animal;
     bool encontrado = false;
 
-    FILE * file = fopen("animal.dat","rb");
+    FILE * file = fopen("animais.dat","rb");
+    
+    if (file == NULL){
+        return false;
+    }
 
     while(fread(&animal, sizeof(Animal), 1, file) == 1){
         if(animal.id == *idAnimal && animal.status == true){
             encontrado = true;
             fclose(file);
+            return true;
             break;
-            return false;
         }
     }
     if(encontrado == false){
-        return true;
+        return false;
     }
 }
 
@@ -78,6 +82,16 @@ int retornaUltimoIDAnimal() {
     }
 
     return 0; 
+}
+
+void cabecalhoAnimal(){
+    printf("====================================\n");
+    printf("| ID | CPF do dono | Descrição | Nome do dono |\n");
+    printf("====================================\n");
+}
+void printaAnimal(Animal *animal, char *nomeCLiente){
+    printf("| %d | %s | %s | %s |\n", animal->id, animal->cpfDoCliente, animal->descricao, nomeCLiente);
+    printf("====================================\n");
 }
 
 int menuAnimal(void){
@@ -168,15 +182,10 @@ void readAnimal(void) {
         printf("Erro ao abrir arquivo.");
         return;
     }
-
+    cabecalhoAnimal();
     while (fread(&animal, sizeof(Animal), 1, file) == 1) {
         if (strncmp(animal.cpfDoCliente, cpfPesquisa, sizeof(animal.cpfDoCliente)) == 0 && animal.status == true) {
-            printf("==================================\n");
-            printf("\tID do animal: %i\n", animal.id);
-            printf("\tDescricao: %s\n", animal.descricao);
-            printf("\tCPF do cliente: %s\n", animal.cpfDoCliente);
-            printf("\tNome do cliente dono: %s\n", getCli(cpfPesquisa));
-            printf("==================================\n");
+            printaAnimal(&animal, getCli(animal.cpfDoCliente));
 
             encontrado = true;
         }
@@ -310,15 +319,10 @@ void listarTodosAnimais(){
     if (file == NULL){
         printf("Erro ao abrir arquivo.");
     }
-
+    cabecalhoAnimal();
     while(fread(&animal, sizeof(Animal), 1, file) == 1){
         if(animal.status == true){
-            printf("==================================\n");
-            printf("\tID do animal: %i\n", animal.id);
-            printf("\tCPF do cliente: %s\n", animal.cpfDoCliente);
-            printf("\tDescricao: %s\n", animal.descricao);
-            printf("\tNome do cliente dono: %s\n", getCli(animal.cpfDoCliente));
-            printf("==================================\n");
+            printaAnimal(&animal, getCli(animal.cpfDoCliente));
         }
     }
     

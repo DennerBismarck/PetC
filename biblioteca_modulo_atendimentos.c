@@ -25,6 +25,18 @@ struct atendimento{
     Atendimento *prox;
 };
 
+void cabecalhoAtendimento(){
+    printf("====================================\n");
+    printf("| ID | Data | Hora | CPF do Cliente | Nome do cliente | ID do animal | Serviço |\n");
+    printf("====================================\n");
+}
+
+void printaAtendimento(Atendimento *atendimento, char *nomecli, char *servico, char *valor){
+
+    printf("| %d | %s | %s | %s | %s | %d | %s | %s |\n", atendimento->id, atendimento -> data, atendimento -> hora, atendimento ->cpfDoCliente, nomecli, atendimento->idDoanimal, servico, valor);
+    printf("====================================\n");
+}
+
 //Get data - feita com inspiração na getNome de Gabriel Canuto
 bool getData (const char *data){
     Atendimento atendimento;
@@ -147,9 +159,8 @@ Atendimento* agendarProcedimento() {
             while (!agendamentoConcluido) {
                 listarServicos();
                 printf("Digite o id do servico que voce deseja agendar: ");
-
                 int ser;
-                scanf("%i", &ser);fflush(stdin);
+                scanf("%i", &ser);limpaBuffer();
 
                 if (checaServicoID(&ser)) {
                     ate->idDoservico = ser;
@@ -158,7 +169,7 @@ Atendimento* agendarProcedimento() {
                         readAnimal();
                         int ani;
                         printf("Digite o id do animal que sera atendido: ");
-                        scanf("%i", &ani);fflush(stdin);
+                        scanf("%i", &ani);limpaBuffer();
 
                         if (checaAnimalID(&ani)) {
                             ate->idDoanimal = ani;
@@ -262,7 +273,7 @@ void updateAtendimento() {
 
                 int ser;
                 scanf("%i", &ser);
-                fflush(stdin);
+                limpaBuffer();
 
                 if (checaServicoID(&ser)) {
                     ate.idDoservico = ser;
@@ -271,7 +282,7 @@ void updateAtendimento() {
                     int ani;
                     printf("Digite o id do animal que sera atendido: ");
                     scanf("%i", &ani);
-                    fflush(stdin);
+                    limpaBuffer();
 
                     if (checaAnimalID(&ani)) {
                         ate.idDoanimal = ani;
@@ -371,7 +382,7 @@ void selecionaAtendimento(){
 
     do{
         printf("Digite 1 para editar um dos atendimentos, 2 para deletar ou 0 para continuar: ");
-        scanf("%i", &opSelecionaAtendimento);fflush(stdin);
+        scanf("%i", &opSelecionaAtendimento);limpaBuffer();
         switch (opSelecionaAtendimento){
             case 1:
                 updateAtendimento();
@@ -408,32 +419,17 @@ void listarTodosAtendimentos() {
         return;
     }
 
+    cabecalhoAtendimento();
     while (fread(&atendimento, sizeof(Atendimento), 1, fileAte) == 1) {
-        if (atendimento.status == true) {
-            printf("==================================\n");
+        if (atendimento.status == true) {  
 
-            printf("\tID do atendimento: %i\n", atendimento.id);
-            printf("\tCPF do cliente: %s\n", atendimento.cpfDoCliente);
-            printf("\tNome do cliente: %s\n", getCli(atendimento.cpfDoCliente));
-
-            printf("\tData: %s\n", atendimento.data);
-            printf("\tHora: %.5s\n", atendimento.hora);
-
-            
             fseek(fileAni, (atendimento.idDoanimal - 1) * sizeof(Animal), SEEK_SET);
             fread(&animal, sizeof(Animal), 1, fileAni);
-
-            printf("\tId do animal atendido: %d\n", atendimento.idDoanimal);
-            printf("\tDescricao do animal atendido: %s\n", &animal.descricao);
-
             
             fseek(fileSer, (atendimento.idDoservico - 1) * sizeof(Servico), SEEK_SET);
             fread(&servico, sizeof(Servico), 1, fileSer);
 
-            printf("\tServico prestado: %s \n", servico.nome);
-            printf("\tValor: %s \n", servico.valor);
-
-            printf("==================================\n");
+            printaAtendimento(&atendimento, getCli(atendimento.cpfDoCliente), servico.nome, servico.valor);
         }
     }
     selecionaAtendimento();
@@ -477,35 +473,18 @@ void listarAgendamentosCliente(){
         }
     }
 
+    cabecalhoAtendimento();
     while (fread(&atendimento, sizeof(Atendimento), 1, fileAte) == 1) {
         if (atendimento.status == true && strcmp(atendimento.cpfDoCliente, cpfPesquisa) == 0) {
             encontrado = true;
 
-            printf("==================================\n");
-
-            printf("\tID do atendimento: %i\n", atendimento.id);
-            printf("\tCPF do cliente: %s\n", atendimento.cpfDoCliente);
-            printf("\tNome do cliente: %s\n", getCli(atendimento.cpfDoCliente));
-
-            printf("\tData: %s\n", atendimento.data);
-            printf("\tHora: %.5s\n", atendimento.hora);
-
-            
             fseek(fileAni, (atendimento.idDoanimal - 1) * sizeof(Animal), SEEK_SET);
             fread(&animal, sizeof(Animal), 1, fileAni);
-
-            printf("\tId do animal atendido: %d\n", atendimento.idDoanimal);
-            printf("\tDescricao do animal atendido: %s\n", &animal.descricao);
-
             
             fseek(fileSer, (atendimento.idDoservico - 1) * sizeof(Servico), SEEK_SET);
             fread(&servico, sizeof(Servico), 1, fileSer);
 
-            printf("\tServico prestado: %s \n", servico.nome);
-            printf("\tValor: %s \n", servico.valor);
-
-            printf("==================================\n");
-
+            printaAtendimento(&atendimento, getCli(atendimento.cpfDoCliente), servico.nome, servico.valor);
         }
     }
     if (encontrado == false){
@@ -578,28 +557,17 @@ void listagemDinamicaDataHora() {
     fclose(file);
 
     atendimento = lista;
+
+    cabecalhoAtendimento();
     while (atendimento != NULL) {
-        printf("==================================\n");
-        printf("\tID: %d\n", atendimento->id);
-        printf("\tData: %s\n", atendimento->data);
-        printf("\tHora: %s\n", atendimento->hora);
-        printf("\tCPF do Cliente: %s\n", atendimento->cpfDoCliente);
-        printf("\tNome do cliente: %s\n", getCli(atendimento->cpfDoCliente));
 
         fseek(fileAni, (atendimento->idDoanimal - 1) * sizeof(Animal), SEEK_SET);
         fread(&animal, sizeof(Animal), 1, fileAni);
-
-        printf("\tId do animal atendido: %d\n", atendimento->idDoanimal);
-        printf("\tDescricao do animal atendido: %s\n", &animal.descricao);
-
         
         fseek(fileSer, (atendimento->idDoservico - 1) * sizeof(Servico), SEEK_SET);
         fread(&servico, sizeof(Servico), 1, fileSer);
 
-        printf("\tServico prestado: %s \n", servico.nome);
-        printf("\tValor: %s \n", servico.valor);
-
-        printf("==================================\n");
+        printaAtendimento(atendimento, getCli(atendimento->cpfDoCliente), servico.nome, servico.valor);
         digiteEnter();
         atendimento = atendimento->prox;
     }
@@ -655,64 +623,70 @@ void listagemDinamicaFiltradaPorData() {
         return;
     }
 
-    while (fread(atendimento, sizeof(Atendimento), 1, file) == 1) {
-        if (strcmp(atendimento->data, *dataFiltro) == 0) {
-            atendimento->prox = NULL;
+while (fread(atendimento, sizeof(Atendimento), 1, file) == 1) {
+    if (strcmp(atendimento->data, *dataFiltro) == 0) {
+        Atendimento *novoAtendimento = (Atendimento *)malloc(sizeof(Atendimento));
 
-            if ((lista == NULL) || (strcmp(atendimento->hora, lista->hora) > 0) ||
-                ((strcmp(atendimento->hora, lista->hora) == 0) && (strcmp(atendimento->data, lista->data) > 0))) {
-                atendimento->prox = lista;
-                lista = atendimento;
-            } else {
-                Atendimento *anterior = lista;
-                Atendimento *atual = lista->prox;
-                while ((atual != NULL) && ((strcmp(atendimento->hora, atual->hora) < 0) ||
-                                           ((strcmp(atendimento->hora, atual->hora) == 0) && (strcmp(atendimento->data, atual->data) < 0)))) {
-                    anterior = atual;
-                    atual = atual->prox;
-                }
-                anterior->prox = atendimento;
-                atendimento->prox = atual;
-            }
-        }
-
-        atendimento = (Atendimento *)malloc(sizeof(Atendimento));
-        if (atendimento == NULL) {
+        if (novoAtendimento == NULL) {
             printf("Erro de alocacao de memoria\n");
             break;
         }
+
+        
+        memcpy(novoAtendimento, atendimento, sizeof(Atendimento));
+        novoAtendimento->prox = NULL;
+
+        
+        if ((lista == NULL) || (strcmp(novoAtendimento->hora, lista->hora) > 0) ||
+            ((strcmp(novoAtendimento->hora, lista->hora) == 0) && (strcmp(novoAtendimento->data, lista->data) > 0))) {
+            novoAtendimento->prox = lista;
+            lista = novoAtendimento;
+        } else {
+            Atendimento *anterior = NULL;
+            Atendimento *atual = lista;
+
+            
+            while ((atual != NULL) &&
+                   ((strcmp(novoAtendimento->hora, atual->hora) < 0) ||
+                    ((strcmp(novoAtendimento->hora, atual->hora) == 0) &&
+                     (strcmp(novoAtendimento->data, atual->data) < 0)))) {
+                anterior = atual;
+                atual = atual->prox;
+            }
+
+            anterior->prox = novoAtendimento;
+            novoAtendimento->prox = atual;
+        }
     }
+
+    atendimento = (Atendimento *)malloc(sizeof(Atendimento));
+    if (atendimento == NULL) {
+        printf("Erro de alocacao de memoria\n");
+        break;
+    }
+}
+
 
     fclose(file);
 
     if (lista == NULL) {
-        printf("Nenhum agendamento encontrado para a data %s.\n", dataFiltro);
+        printf("Nenhum agendamento encontrado para a data %s.\n", *dataFiltro);
         digiteEnter();
         return;
     }
 
     atendimento = lista;
+
+    cabecalhoAtendimento();
     while (atendimento != NULL) {
-        printf("==================================\n");
-        printf("\tID: %d\n", atendimento->id);
-        printf("\tData: %s\n", atendimento->data);
-        printf("\tHora: %s\n", atendimento->hora);
-        printf("\tCPF do Cliente: %s\n", atendimento->cpfDoCliente);
-        printf("\tNome do cliente: %s\n", getCli(atendimento->cpfDoCliente));
 
         fseek(fileAni, (atendimento->idDoanimal - 1) * sizeof(Animal), SEEK_SET);
         fread(&animal, sizeof(Animal), 1, fileAni);
-
-        printf("\tId do animal atendido: %d\n", atendimento->idDoanimal);
-        printf("\tDescricao do animal atendido: %s\n", &animal.descricao);
-
+        
         fseek(fileSer, (atendimento->idDoservico - 1) * sizeof(Servico), SEEK_SET);
         fread(&servico, sizeof(Servico), 1, fileSer);
 
-        printf("\tServico prestado: %s \n", servico.nome);
-        printf("\tValor: %s \n", servico.valor);
-
-        printf("==================================\n");
+        printaAtendimento(atendimento, getCli(atendimento->cpfDoCliente), servico.nome, servico.valor);
         digiteEnter();
         atendimento = atendimento->prox;
     }

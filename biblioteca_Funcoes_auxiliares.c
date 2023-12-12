@@ -23,7 +23,6 @@ void mostradorLogo(void){
 
 /*Inspirado no LeLinha de Flavius Gorgônio*/
 
-/*GAMBIARRA PRO INPUT COM FGFETS PQ O DIABO DO C NÃO SUPORTA GETLINE EM MUITOS SISTEMAS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA*/
 char *input(const char *entrada) {
     char *buffer = (char *)malloc(MAX_INPUT_LENGTH);
 
@@ -47,10 +46,13 @@ char *input(const char *entrada) {
     return buffer;
 }
 
+void limpaBuffer(){
+    int c;
+    while((c = getchar()) != '\n' && c != EOF);
+}
 void digiteEnter(void){
     printf("Digite Enter para continuar\n");
-    getchar();  
-    fflush(stdin);
+    limpaBuffer();
     printf("====================================\n");
 }
 

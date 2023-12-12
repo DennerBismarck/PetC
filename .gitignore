@@ -8,3 +8,8 @@ biblioteca_modulo_animais.o
 biblioteca_modulo_atendimentos.o
 petc.o
 a.exe
+a.out
+animais.dat
+clientes.dat
+servicos.dar
+atendimentos.dat
